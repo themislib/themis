@@ -8,9 +8,9 @@ type: core
 requires:
   - core
 sources:
-  - "@augmentcode/themis/README.md"
-  - "@augmentcode/themis/docs/SELECTORS.md"
-  - "@augmentcode/themis/streaming-store"
+  - "@themislib/themis/README.md"
+  - "@themislib/themis/docs/SELECTORS.md"
+  - "@themislib/themis/streaming-store"
   - package-internal streaming selector implementation
 triggers:
   - streaming store
@@ -29,7 +29,7 @@ triggers:
 
 Use this root for Streaming-specific `themis` work and as the default package route when the touched code path uses the Kefir/observable Store variant. It covers Node/server environments, background workers, CLIs, test harnesses, and apps without framework-specific integration. Generic Redux/redux-saga guidance remains in `../core/`.
 
-> StreamingStore is the Kefir/observable variant exported from `@augmentcode/themis/streaming-store`.
+> StreamingStore is the Kefir/observable variant exported from `@themislib/themis/streaming-store`.
 
 ## Exclusive Streaming Store family rule
 

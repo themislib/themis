@@ -1,5 +1,5 @@
-import { Store } from "@augmentcode/themis/svelte-store";
-import { createAction, createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+import { Store } from "@themislib/themis/svelte-store";
+import { createAction, createAsyncAction } from "@themislib/themis/utils/store/create-action";
 import { todoItemsReducer } from "./todo-items-slice";
 
 export const addTodo = createAction("todoItems/add");

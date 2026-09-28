@@ -3,7 +3,7 @@ import { createArchitectureRule, createArchitectureRulePlugin } from "../../rule
 
 export const ruleId = "redundant-async-action-catch";
 
-const actionModule = "@augmentcode/themis/utils/store/create-action";
+const actionModule = "@themislib/themis/utils/store/create-action";
 
 function propertyName(node) {
   return node?.type === "MemberExpression"

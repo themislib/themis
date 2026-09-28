@@ -115,9 +115,9 @@ describe("ESLint imported selector AST helpers", () => {
 describe("ESLint Store createSelector provenance helper", () => {
   it("recognizes Store instance member calls from supported aliased imports", () => {
     expect(storeCreateSelectorCalls(`
-      import { Store as SvelteStore } from "@augmentcode/themis/svelte-store";
-      import { ReactStore as SignalsStore } from "@augmentcode/themis/react-store";
-      import { StreamingStore } from "@augmentcode/themis/streaming-store";
+      import { Store as SvelteStore } from "@themislib/themis/svelte-store";
+      import { ReactStore as SignalsStore } from "@themislib/themis/react-store";
+      import { StreamingStore } from "@themislib/themis/streaming-store";
       const svelte = new SvelteStore();
       const react = new SignalsStore();
       const streaming = new StreamingStore();
@@ -133,7 +133,7 @@ describe("ESLint Store createSelector provenance helper", () => {
 
   it("recognizes direct, destructured, computed, and chained local aliases", () => {
     expect(storeCreateSelectorCalls(`
-      import { Store } from "@augmentcode/themis/svelte-store";
+      import { Store } from "@themislib/themis/svelte-store";
       const store = new Store();
       const makeSelector = store.createSelector;
       const { createSelector } = store;
@@ -153,8 +153,8 @@ describe("ESLint Store createSelector provenance helper", () => {
 
   it("rejects utilities, unrelated objects, dynamic properties, and shadowed bindings", () => {
     expect(storeCreateSelectorCalls(`
-      import { Store } from "@augmentcode/themis/svelte-store";
-      import { ReactStore } from "@augmentcode/themis/svelte-store";
+      import { Store } from "@themislib/themis/svelte-store";
+      import { ReactStore } from "@themislib/themis/svelte-store";
       import { createSelector } from "../utils/selector-core/create-cached-selector";
       const store = new Store();
       const wrongStore = new ReactStore();

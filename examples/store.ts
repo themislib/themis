@@ -1,10 +1,10 @@
 import type { Observable as KefirObservable } from "kefir";
 import type { ReadonlySignal } from "@preact/signals-react";
 import type { Readable } from "svelte/store";
-import { Store } from "@augmentcode/themis/svelte-store";
-import { ReactStore } from "@augmentcode/themis/react-store";
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
-import type { StoreInstanceState } from "@augmentcode/themis/types";
+import { Store } from "@themislib/themis/svelte-store";
+import { ReactStore } from "@themislib/themis/react-store";
+import { StreamingStore } from "@themislib/themis/streaming-store";
+import type { StoreInstanceState } from "@themislib/themis/types";
 import { counterReducer } from "./counter/counter-slice";
 import { todosReducer } from "./todos/todos-slice";
 

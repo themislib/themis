@@ -1,4 +1,4 @@
-import { Store } from "@augmentcode/themis/svelte-store";
+import { Store } from "@themislib/themis/svelte-store";
 
 export const appStore = new Store();
 

@@ -1,7 +1,7 @@
 ---
 name: streaming/store
 description: >-
-  Use @augmentcode/themis/streaming-store for StreamingStore imports,
+  Use @themislib/themis/streaming-store for StreamingStore imports,
   init/dispose, process bootstrap, and whole-Store ownership. Route selector call
   validity and subscriptions to streaming/selector-lifecycle.
 type: sub-skill
@@ -9,9 +9,9 @@ requires:
   - streaming
   - core/import-boundaries
 sources:
-  - "@augmentcode/themis/streaming-store"
-  - "@augmentcode/themis/docs/ARCHITECTURE.md"
-  - "@augmentcode/themis/README.md"
+  - "@themislib/themis/streaming-store"
+  - "@themislib/themis/docs/ARCHITECTURE.md"
+  - "@themislib/themis/README.md"
 triggers:
   - StreamingStore
   - streaming-store import
@@ -27,12 +27,12 @@ This is Streaming Store family guidance. For the same app/package/code path, do 
 
 ## Correct import and class choice
 
-- Use `StreamingStore` from `@augmentcode/themis/streaming-store`.
+- Use `StreamingStore` from `@themislib/themis/streaming-store`.
 - Do not import `StreamingStore` from the package root, `src/*`, or `utils/streaming-selectors/*`.
 
 ```ts
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
-import type { StoreState } from "@augmentcode/themis/types";
+import { StreamingStore } from "@themislib/themis/streaming-store";
+import type { StoreState } from "@themislib/themis/types";
 
 export const streamStore = new StreamingStore({ todos: todosReducer });
 export type AppState = StoreState<typeof streamStore>;
@@ -81,7 +81,7 @@ they do not take over Store-owned logger or timer cleanup.
 
 ## Verification cues
 
-- Imports use `@augmentcode/themis/streaming-store` for `StreamingStore`.
+- Imports use `@themislib/themis/streaming-store` for `StreamingStore`.
 - Examples and docs do not describe `Store` as a streaming API.
 - Process/test shutdown invokes the Store disposer and the app-owned saga cancel functions.
 - Selector usage follows `../selector-lifecycle/SKILL.md` — **Verification cues**, including error-path tests when applicable.

@@ -7,7 +7,7 @@ This package has two separate workflows: consumer apps install the published pac
 Install the package in the consuming app. Its `redux`, `redux-saga`, `typed-redux-saga`, and `fast-equals` runtime dependencies are installed with it:
 
 ```bash
-npm install @augmentcode/themis
+npm install @themislib/themis
 ```
 
 The package declares optional React/Preact peers for `ReactStore` and a Svelte peer for the Svelte-readable entrypoint; install the peer required by the chosen app. For saga tests that follow this repository's examples, install the optional test helper:
@@ -106,7 +106,7 @@ npm 7+ does not run dependency uninstall lifecycle scripts, so uninstalling the 
 ```bash
 npx themis cleanup-skills
 # or: npm exec -- themis cleanup-skills
-npm uninstall @augmentcode/themis
+npm uninstall @themislib/themis
 ```
 
 That helper removes only the files listed in `.agents/skills/themis/installed-skills.yml`, then the manifest itself, and removes only the owned `.claude/skills/themis` compatibility link (including a dangling owned link whose canonical target is already absent). It prunes only empty compatibility directories and prints a clear no-op message when no manifest or owned link exists. Foreign `.claude` paths and unrelated `.agents/skills` content remain untouched; as a one-time migration it also removes package-owned skill copies left directly under the legacy flat `.agents/skills/` location. Remove optional test dependencies only if your app does not use them elsewhere:

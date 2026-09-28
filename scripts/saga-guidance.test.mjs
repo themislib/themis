@@ -27,8 +27,8 @@ function evaluate(source, tail = '', bindings = {}, modules = {}) {
   const imports = {
     'typed-redux-saga': typed,
     'redux-saga/effects': effects,
-    '@augmentcode/themis/utils/store/create-action': actions,
-    '@augmentcode/themis/saga': { wrapStreamingGenerator },
+    '@themislib/themis/utils/store/create-action': actions,
+    '@themislib/themis/saga': { wrapStreamingGenerator },
     vitest: { vi, describe, it, expect },
     ...modules,
   };
@@ -226,7 +226,7 @@ describe('documented typed test effects (Core F2)', () => {
     const initialized = vi.spyOn(StreamingStore.prototype, 'init');
     try {
       const checks = exampleTests(snippet('docs/TESTING.md', '## Mock Store Setup'), {
-        '@augmentcode/themis/streaming-store': { StreamingStore },
+        '@themislib/themis/streaming-store': { StreamingStore },
         './todos-slice': { todosReducer, addTodo }, './todos-selectors': { selectTodoById },
       });
       expect(checks).toHaveLength(1);
@@ -368,7 +368,7 @@ it('type-checks the actual corrected snippets, including the unchanged undefined
   const options = {
     noEmit: true, strict: true, skipLibCheck: true, target: ts.ScriptTarget.ES2022,
     module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler,
-    baseUrl: resolve('.'), paths: { '@augmentcode/themis/*': ['src/*'] },
+    baseUrl: resolve('.'), paths: { '@themislib/themis/*': ['src/*'] },
   };
   const host = ts.createCompilerHost(options), getSourceFile = host.getSourceFile.bind(host);
   host.getSourceFile = (path, version, ...rest) => files.has(path)

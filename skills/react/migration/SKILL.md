@@ -114,7 +114,7 @@ const nextSteps: ReactMigrationStep[] = cartAssessment.verdict === "reactstore"
 
 ## Verification cues
 
-- React examples import `ReactStore` from `@augmentcode/themis/react-store` and keep
+- React examples import `ReactStore` from `@themislib/themis/react-store` and keep
   selectors Store-bound.
 - Consumer migration passes [Verification cues](../selector-lifecycle/SKILL.md#verification-cues).
 - Runtime readiness passes [Verification cues](./setup/SKILL.md#verification-cues),

@@ -7,8 +7,8 @@
  */
 
 import { put, takeEvery, select } from "typed-redux-saga";
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
-import { getItems, type Collection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { createAction } from "@themislib/themis/utils/store/create-action";
+import { getItems, type Collection } from "@themislib/themis/utils/collections/collection-utils";
 import { getLocalStorageJSON, setLocalStorageJSON } from "../../utils/safe-local-storage-saga";
 import {
   addTodo,

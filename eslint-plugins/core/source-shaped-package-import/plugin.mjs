@@ -14,10 +14,10 @@ const removedRelativeImports = new Set([
   "../utils/store/create-middleware",
 ]);
 
-const sourceShapedPackagePattern = /^@augmentcode\/themis(?:$|\/(?:src|components|slices|middlewares?|init|redux-dispatch-bridge)(?:$|\/)|\/utils\/(?!collections\/collection-utils$|store\/(?:create-action|create-reducer|boolean-preference|domain-scoped)$|sagas\/(?:debounce-saga|retry-with-timeout|wrap-async-generator|selector-channel-effects)$).+)/;
+const sourceShapedPackagePattern = /^@themislib\/themis(?:$|\/(?:src|components|slices|middlewares?|init|redux-dispatch-bridge)(?:$|\/)|\/utils\/(?!collections\/collection-utils$|store\/(?:create-action|create-reducer|boolean-preference|domain-scoped)$|sagas\/(?:debounce-saga|retry-with-timeout|wrap-async-generator|selector-channel-effects)$).+)/;
 
 function importSummary(sourcePath) {
-  if (sourceShapedPackagePattern.test(sourcePath)) return "Use an exported @augmentcode/themis package subpath; root/source-shaped/removed paths are not public API.";
+  if (sourceShapedPackagePattern.test(sourcePath)) return "Use an exported @themislib/themis package subpath; root/source-shaped/removed paths are not public API.";
   if (removedRelativeImports.has(sourcePath)) return "Use stable package subpaths instead of removed/source-shaped relative imports.";
   return undefined;
 }
@@ -26,7 +26,7 @@ export const rule = createArchitectureRule({
   ruleId,
   summary: "Source imported a root, source-shaped, or removed package path.",
   why: "Only stable package subpaths are public API; source-shaped paths and removed relative paths couple consumers to internals.",
-  fix: "Import from an approved @augmentcode/themis package subpath or current source owner instead.",
+  fix: "Import from an approved @themislib/themis package subpath or current source owner instead.",
   create(_context, { report }) {
     function checkSource(node) {
       const sourcePath = staticString(node);

@@ -103,7 +103,7 @@ describe("itemsReducer async actions", () => {
 
 ```typescript
 import { todosReducer, addTodo, removeTodo } from "./todos-slice";
-import { getItem, getItems } from "@augmentcode/themis/utils/collections/collection-utils";
+import { getItem, getItems } from "@themislib/themis/utils/collections/collection-utils";
 
 describe("todosReducer collections", () => {
   it("should add a todo to the collection", () => {
@@ -130,7 +130,7 @@ Selectors are pure functions. Call `.select(state)` with a mock state object.
 ```typescript
 import { describe, it, expect } from "vitest";
 import { selectCompletedTodos, selectTodoById } from "./todos-selectors";
-import { createCollection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { createCollection } from "@themislib/themis/utils/collections/collection-utils";
 
 describe("selectCompletedTodos", () => {
   const mockState = {
@@ -202,7 +202,7 @@ For framework-neutral action/reducer integration, use `StreamingStore` and pure 
 
 ```typescript
 import { describe, it, expect } from "vitest";
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
+import { StreamingStore } from "@themislib/themis/streaming-store";
 import { todosReducer, addTodo } from "./todos-slice";
 import { selectTodoById } from "./todos-selectors";
 

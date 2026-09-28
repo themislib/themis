@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "baseUrl": "../../../..",
     "paths": {
-      "@augmentcode/themis/svelte-store": ["src/svelte-store.ts"]
+      "@themislib/themis/svelte-store": ["src/svelte-store.ts"]
     }
   },
   "include": ["./type-aware-*.ts"]

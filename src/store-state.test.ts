@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Observable as KefirObservable } from 'kefir';
 import type { ReadonlySignal } from '@preact/signals-react';
-import { createReducer } from '@augmentcode/themis/utils/store/create-reducer';
-import { createAction, createAsyncAction } from '@augmentcode/themis/utils/store/create-action';
-import type { StoreDispatch, StoreInstanceState, StoreOptions, StoreState } from '@augmentcode/themis/types';
+import { createReducer } from '@themislib/themis/utils/store/create-reducer';
+import { createAction, createAsyncAction } from '@themislib/themis/utils/store/create-action';
+import type { StoreDispatch, StoreInstanceState, StoreOptions, StoreState } from '@themislib/themis/types';
 import { Store } from './svelte-store';
 import { StreamingStore } from './streaming-store';
 import { ReactStore } from './react-store';

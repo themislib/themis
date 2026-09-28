@@ -8,10 +8,10 @@ requires:
   - react
   - core/state-integrity
 sources:
-  - "@augmentcode/themis/react-store"
+  - "@themislib/themis/react-store"
   - "@preact/signals-react"
   - "@preact/signals-react/runtime"
-  - "@augmentcode/themis/docs/SELECTORS.md"
+  - "@themislib/themis/docs/SELECTORS.md"
   - ../signals/SKILL.md
 triggers:
   - React selector
@@ -154,5 +154,5 @@ wrong-shape and hook-boundary mistakes are covered in
 ## See also
 
 - `../store/SKILL.md` — Store class and import choice.
-- `@augmentcode/themis/docs/SELECTORS.md` — human reference and examples for all call forms.
+- `@themislib/themis/docs/SELECTORS.md` — human reference and examples for all call forms.
 - `../../core/state-integrity/SKILL.md` — canonical derived-value ownership.

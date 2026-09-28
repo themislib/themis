@@ -1,5 +1,5 @@
 import { derived } from "svelte/store";
-import { Store } from "@augmentcode/themis/svelte-store";
+import { Store } from "@themislib/themis/svelte-store";
 import { selectTodos } from "../todos/todos-selectors";
 
 export const store = new Store({ todos: todosReducer }, undefined, { throttledSelectorFrequency: 120 });

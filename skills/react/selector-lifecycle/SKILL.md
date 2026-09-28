@@ -9,7 +9,7 @@ requires:
   - react
   - react/selectors
 sources:
-  - "@augmentcode/themis/react-store"
+  - "@themislib/themis/react-store"
   - ../signals/SKILL.md
   - ../selectors/SKILL.md
 triggers:
@@ -191,4 +191,4 @@ for `ReactStore`, that result is a Preact React `ReadonlySignal<R>`.
   startup, component dispatch, and handler examples.
 - `../selectors/SKILL.md` — authoring ReactStore selectors.
 - `../store/SKILL.md` — `ReactStore` import and initialization rules.
-- `@augmentcode/themis/docs/SELECTORS.md` — human reference for selector call forms.
+- `@themislib/themis/docs/SELECTORS.md` — human reference for selector call forms.

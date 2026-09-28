@@ -6,7 +6,7 @@ This root directory is the local ESLint migration surface for the architecture g
 
 - `index.mjs` exports exactly five composed domain root config values — `core`, `store`, `svelte`, `react`, and `streaming` — plus `plugins` as the named per-rule config map. The domain rule lists are derived from the `coreRulePlugins`/`storeRulePlugins`/`svelteRulePlugins`/`reactRulePlugins` groupings in `plugins/index.mjs`, so the roots stay aligned with the folder domains. Root configs register one private shared `themis` plugin object aggregated from the per-rule implementations; no raw aggregate plugin object is exported as a root API.
 - Rule folders are grouped by domain directory: `core/` (package/source hygiene rules valid in any consumer), `store/` (Redux store runtime rules: state, actions, reducers, collections, selectors, and sagas), `svelte/` (Svelte component/store boundary rules), and `react/` (React counterparts of the Svelte rules plus React selector call-mode rules). Rule IDs stay flat (`themis/<rule-id>`); domains only organize the folders. There is no `streaming/` directory yet because the streaming domain has no domain-specific rules.
-- `<domain>/<rule-id>/plugin.mjs` is the single implementation file for each active rule/check. Public per-rule imports and collection wiring point directly at this file, and the public subpath stays `@augmentcode/themis/eslint-plugins/plugins/<rule-id>` regardless of domain.
+- `<domain>/<rule-id>/plugin.mjs` is the single implementation file for each active rule/check. Public per-rule imports and collection wiring point directly at this file, and the public subpath stays `@themislib/themis/eslint-plugins/plugins/<rule-id>` regardless of domain.
 - `<domain>/<rule-id>/fixtures/` owns that rule's pass/fail examples for lightweight/static validation and docs. Aggregate-scope checks use a local fixture note when their current Wave 1 coverage is inline in framework/package verifier cases, and ESLint-disable coverage should stay in lightweight validation instead of committed suppression fixtures.
 - `plugins/index.mjs` is the standalone plugin collection barrel for selected-subset composition. Public one-rule package imports still use `/eslint-plugins/plugins/<rule-id>`, and those exports target the same per-rule `plugin.mjs` implementation files.
 - `rule-utils.mjs` contains shared utilities for path classification, rule metadata, and detailed report formatting. Suppression uses standard ESLint disable comments handled by ESLint itself.
@@ -31,12 +31,12 @@ Prefer narrow `themis/<rule-id>` disables and preserve the reviewed reason in ex
 - Converted checks are registered as `themis/<rule-id>` ESLint rules. The root static configs register the shared plugin namespace once, list every architecture rule as `off` in the base entry, then enable each selected rule as `warn` in its scoped file/ignore entry. Aggregate cross-file checks keep their public diagnostics in the ESLint-backed architecture validator runner, and any future Svelte-template checks should use a tested ESLint runner/processor path.
 - For validation in this package, use lightweight package/API checks such as `npx --no-install vitest run scripts/package-validation.test.mjs` and direct import/config smoke checks. Do not recreate or run `eslint-plugins/*.test.mjs` or individual ESLint rule test files as routine validation because the removed rule suites are known to risk high CPU or hangs.
 
-The package exports three ESLint surfaces. `@augmentcode/themis/eslint-plugins` is the primary entrypoint: it exports the five static domain root configs (`core`, `store`, `svelte`, `react`, `streaming`) and the `plugins` per-rule flat-config map, and downstream parent-project configs should normally import only from it. The two lower-level surfaces are also public exports but target selected-rule composition and validator internals: `@augmentcode/themis/eslint-plugins/plugins` is the plugin collection barrel (named per-rule plugin objects plus the grouping maps such as `coreRulePlugins`, `storeRulePlugins`, `svelteRulePlugins`, `reactRulePlugins`, and the aggregated `architectureRulePlugins`/`architectureRules`), and `@augmentcode/themis/eslint-plugins/plugins/<rule-id>` resolves to that rule's `<domain>/<rule-id>/plugin.mjs` implementation. Both lower-level surfaces export raw ESLint plugin objects (`{ meta, rules }`), not flat-config entries, so consumers using them must wire `plugins`/`rules` config themselves. The root entrypoint exposes no `architecturePlugin`, `architectureConfig`, `sourceArchitectureConfig`, helper builders, raw plugin object, rule-config helpers, compatibility aliases, source/test file constants, or customization shims. The older `/eslint-architecture` package subpaths are removed and must not be used.
+The package exports three ESLint surfaces. `@themislib/themis/eslint-plugins` is the primary entrypoint: it exports the five static domain root configs (`core`, `store`, `svelte`, `react`, `streaming`) and the `plugins` per-rule flat-config map, and downstream parent-project configs should normally import only from it. The two lower-level surfaces are also public exports but target selected-rule composition and validator internals: `@themislib/themis/eslint-plugins/plugins` is the plugin collection barrel (named per-rule plugin objects plus the grouping maps such as `coreRulePlugins`, `storeRulePlugins`, `svelteRulePlugins`, `reactRulePlugins`, and the aggregated `architectureRulePlugins`/`architectureRules`), and `@themislib/themis/eslint-plugins/plugins/<rule-id>` resolves to that rule's `<domain>/<rule-id>/plugin.mjs` implementation. Both lower-level surfaces export raw ESLint plugin objects (`{ meta, rules }`), not flat-config entries, so consumers using them must wire `plugins`/`rules` config themselves. The root entrypoint exposes no `architecturePlugin`, `architectureConfig`, `sourceArchitectureConfig`, helper builders, raw plugin object, rule-config helpers, compatibility aliases, source/test file constants, or customization shims. The older `/eslint-architecture` package subpaths are removed and must not be used.
 
 Each consumer project picks ONE domain root for its app path. In a parent project's `eslint.config.js`:
 
 ```js
-import { svelte } from "@augmentcode/themis/eslint-plugins";
+import { svelte } from "@themislib/themis/eslint-plugins";
 
 export default svelte;
 ```
@@ -55,12 +55,12 @@ Each root composes the lower layers (core, then store, then its domain rules); r
 
 ### Breaking change: `full` and `recommended` removed
 
-The `full` and `recommended` roots bundled the svelte and react domains together and effectively served only Svelte consumers; they are removed outright (no deprecated aliases). Migrate by importing the domain root for your app path: Svelte consumers that imported `recommended` or `full` switch to `svelte`; React consumers switch to `react`; UI-free store packages switch to `store`; streaming/back-end consumers switch to `streaming`. The `plugins` per-rule config map and all `@augmentcode/themis/eslint-plugins/plugins/<rule-id>` subpaths are unchanged.
+The `full` and `recommended` roots bundled the svelte and react domains together and effectively served only Svelte consumers; they are removed outright (no deprecated aliases). Migrate by importing the domain root for your app path: Svelte consumers that imported `recommended` or `full` switch to `svelte`; React consumers switch to `react`; UI-free store packages switch to `store`; streaming/back-end consumers switch to `streaming`. The `plugins` per-rule config map and all `@themislib/themis/eslint-plugins/plugins/<rule-id>` subpaths are unchanged.
 
 For selected composition, import `plugins` and export either named entries or `Object.values(plugins)`; do not call package helper builders because none are public API:
 
 ```js
-import { plugins } from "@augmentcode/themis/eslint-plugins";
+import { plugins } from "@themislib/themis/eslint-plugins";
 
 export default [
   plugins["source-shaped-package-import"],
@@ -70,7 +70,7 @@ export default [
 ```
 
 ```js
-import { plugins } from "@augmentcode/themis/eslint-plugins";
+import { plugins } from "@themislib/themis/eslint-plugins";
 
 export default Object.values(plugins);
 ```
@@ -173,7 +173,7 @@ Themis already observes ignored async-action rejections. A defensive catch on th
 Invalid:
 
 ```ts
-import { createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAsyncAction } from "@themislib/themis/utils/store/create-action";
 const loadTodos = createAsyncAction("todos/load", "todos/loadStage");
 const action = loadTodos();
 action.promise.catch(() => undefined);
@@ -217,7 +217,7 @@ import { createSlice } from "@reduxjs/toolkit";
 Valid:
 
 ```ts
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAction } from "@themislib/themis/utils/store/create-action";
 ```
 
 Remediate by using the package's Store-first utilities instead of raw RTK or removed middleware/context helpers.
@@ -245,13 +245,13 @@ Remediate by moving shared/domain state to Redux; keep Svelte stores local tocom
 Invalid:
 
 ```ts
-import { createAction } from "@augmentcode/themis";
+import { createAction } from "@themislib/themis";
 ```
 
 Valid:
 
 ```ts
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAction } from "@themislib/themis/utils/store/create-action";
 ```
 
 Remediate by importing stable approved subpaths instead of root, `src`, init, middleware, or removed bridge entrypoints.

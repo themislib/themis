@@ -8,8 +8,8 @@
  * This is the simplest possible slice — a good starting point for new features.
  */
 
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
-import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+import { createAction } from "@themislib/themis/utils/store/create-action";
+import { createReducer } from "@themislib/themis/utils/store/create-reducer";
 
 // --- State type ---
 

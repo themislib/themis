@@ -31,14 +31,14 @@ type Collection<ITEM extends object, K extends string & keyof ITEM> = {
 
 All Collection operations are **immutable** — they return new Collection objects, never mutate the original.
 
-**Public imports:** Use the explicit utility leaf `@augmentcode/themis/utils/collections/collection-utils`.
+**Public imports:** Use the explicit utility leaf `@themislib/themis/utils/collections/collection-utils`.
 
 ---
 
 ## Creating Collections
 
 ```typescript
-import { createCollection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { createCollection } from "@themislib/themis/utils/collections/collection-utils";
 
 type Todo = { id: string; title: string; completed: boolean };
 
@@ -59,7 +59,7 @@ All operations return a **new** Collection. The original is never modified.
 ### Adding Items
 
 ```typescript
-import { addItem, addItems, addItemAt, upsertItem } from "@augmentcode/themis/utils/collections/collection-utils";
+import { addItem, addItems, addItemAt, upsertItem } from "@themislib/themis/utils/collections/collection-utils";
 
 // Add a single item (no-op if ID already exists)
 const updated = addItem(collection, { id: "3", title: "New todo", completed: false });
@@ -77,7 +77,7 @@ const updated = upsertItem(collection, item); // Adds if new, merges if exists
 ### Updating Items
 
 ```typescript
-import { updateItem, replaceItem } from "@augmentcode/themis/utils/collections/collection-utils";
+import { updateItem, replaceItem } from "@themislib/themis/utils/collections/collection-utils";
 
 // Merge partial updates into an existing item
 const updated = updateItem(collection, { id: "1", completed: true });
@@ -92,7 +92,7 @@ const updated = replaceItem(collection, "old-id", newItem);
 ### Removing Items
 
 ```typescript
-import { removeItem } from "@augmentcode/themis/utils/collections/collection-utils";
+import { removeItem } from "@themislib/themis/utils/collections/collection-utils";
 
 // Remove by ID
 const updated = removeItem(collection, "1");
@@ -111,7 +111,7 @@ import {
   increaseRefsCount,
   decreaseRefsCount,
   getRefsCount,
-} from "@augmentcode/themis/utils/collections/collection-utils";
+} from "@themislib/themis/utils/collections/collection-utils";
 
 // Add an item and set its ref count to 1
 const updated = addItemAndCountRef(collection, newItem);
@@ -149,7 +149,7 @@ import {
   findItem,
   filterItems,
   filterCollection,
-} from "@augmentcode/themis/utils/collections/collection-utils";
+} from "@themislib/themis/utils/collections/collection-utils";
 
 // Get a single item by ID — O(1)
 const item = getItem(collection, "1");

@@ -1,4 +1,4 @@
-import { waitFor, takeEveryFromSelector } from "@augmentcode/themis/saga";
+import { waitFor, takeEveryFromSelector } from "@themislib/themis/saga";
 import { selectTodoById, selectTodosByFilter } from "../todos/todos-selectors";
 
 export const selectTodoByObject = store.createSelector((state, { id }) => state.todos.map[id]);

@@ -5,7 +5,7 @@ import { access, readFile, readdir } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
-export const packageName = "@augmentcode/themis";
+export const packageName = "@themislib/themis";
 
 export const nativeReplacedArchitectureRuleIds = [];
 

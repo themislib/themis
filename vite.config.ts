@@ -21,19 +21,19 @@ function collectEntries(dir: string, base: string = dir): Record<string, string>
 
 const entries = collectEntries(resolve(__dirname, 'src'));
 const testAliases = {
-  '@augmentcode/themis/svelte-store': resolve(__dirname, 'src/svelte-store.ts'),
-  '@augmentcode/themis/streaming-store': resolve(__dirname, 'src/streaming-store.ts'),
-  '@augmentcode/themis/react-store': resolve(__dirname, 'src/react-store.ts'),
-  '@augmentcode/themis/saga': resolve(__dirname, 'src/saga.ts'),
-  '@augmentcode/themis/types': resolve(__dirname, 'src/types.ts'),
-  '@augmentcode/themis/utils/collections/collection-utils': resolve(__dirname, 'src/utils/collections/collection-utils.ts'),
-  '@augmentcode/themis/utils/store/create-action': resolve(__dirname, 'src/utils/store/create-action.ts'),
-  '@augmentcode/themis/utils/store/create-reducer': resolve(__dirname, 'src/utils/store/create-reducer.ts'),
-  '@augmentcode/themis/utils/store/boolean-preference': resolve(__dirname, 'src/utils/store/boolean-preference.ts'),
-  '@augmentcode/themis/utils/store/domain-scoped': resolve(__dirname, 'src/utils/store/domain-scoped.ts'),
-  '@augmentcode/themis/components-svelte/use-init-store': resolve(__dirname, 'src/components-svelte/use-init-store.ts'),
-  '@augmentcode/themis/components-svelte/use-run-saga': resolve(__dirname, 'src/components-svelte/use-run-saga.ts'),
-  '@augmentcode/themis/utils/sagas/selector-channel-effects': resolve(__dirname, 'src/utils/sagas/selector-channel-effects.ts'),
+  '@themislib/themis/svelte-store': resolve(__dirname, 'src/svelte-store.ts'),
+  '@themislib/themis/streaming-store': resolve(__dirname, 'src/streaming-store.ts'),
+  '@themislib/themis/react-store': resolve(__dirname, 'src/react-store.ts'),
+  '@themislib/themis/saga': resolve(__dirname, 'src/saga.ts'),
+  '@themislib/themis/types': resolve(__dirname, 'src/types.ts'),
+  '@themislib/themis/utils/collections/collection-utils': resolve(__dirname, 'src/utils/collections/collection-utils.ts'),
+  '@themislib/themis/utils/store/create-action': resolve(__dirname, 'src/utils/store/create-action.ts'),
+  '@themislib/themis/utils/store/create-reducer': resolve(__dirname, 'src/utils/store/create-reducer.ts'),
+  '@themislib/themis/utils/store/boolean-preference': resolve(__dirname, 'src/utils/store/boolean-preference.ts'),
+  '@themislib/themis/utils/store/domain-scoped': resolve(__dirname, 'src/utils/store/domain-scoped.ts'),
+  '@themislib/themis/components-svelte/use-init-store': resolve(__dirname, 'src/components-svelte/use-init-store.ts'),
+  '@themislib/themis/components-svelte/use-run-saga': resolve(__dirname, 'src/components-svelte/use-run-saga.ts'),
+  '@themislib/themis/utils/sagas/selector-channel-effects': resolve(__dirname, 'src/utils/sagas/selector-channel-effects.ts'),
 };
 
 export default defineConfig({

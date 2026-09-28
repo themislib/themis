@@ -17,12 +17,12 @@
 
 ## Actions
 
-Actions are plain objects describing events. Use `createAction` from `@augmentcode/themis/utils/store/create-action`.
+Actions are plain objects describing events. Use `createAction` from `@themislib/themis/utils/store/create-action`.
 
 ### No Payload
 
 ```typescript
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAction } from "@themislib/themis/utils/store/create-action";
 
 export const resetCounter = createAction("counter/reset");
 // dispatch(resetCounter()) → { type: "counter/reset", payload: undefined }
@@ -68,7 +68,7 @@ export const addItem = createAction(
 Async actions represent operations with three stages: request, success, and failure.
 
 ```typescript
-import { createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAsyncAction } from "@themislib/themis/utils/store/create-action";
 
 export const fetchItems = createAsyncAction<
   [query: string],              // Arguments
@@ -130,11 +130,11 @@ export const itemsReducer = createReducer<ItemsState>(initialState)
 
 ## Creating Reducers
 
-Use `createReducer` from `@augmentcode/themis/utils/store/create-reducer`. It provides a fluent `.with()` API for registering action handlers.
+Use `createReducer` from `@themislib/themis/utils/store/create-reducer`. It provides a fluent `.with()` API for registering action handlers.
 
 ```typescript
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
-import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+import { createAction } from "@themislib/themis/utils/store/create-action";
+import { createReducer } from "@themislib/themis/utils/store/create-reducer";
 
 // State type
 type CounterState = {

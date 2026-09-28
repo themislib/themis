@@ -10,7 +10,7 @@ requires:
   - react/selector-lifecycle
   - core/core-policy
 sources:
-  - "@augmentcode/themis/react-store"
+  - "@themislib/themis/react-store"
   - ../signals/SKILL.md
   - ../selector-lifecycle/SKILL.md
   - ../store/SKILL.md
@@ -44,8 +44,8 @@ argument when needed.
 
 ```ts
 // src/store/react-store.ts
-import { ReactStore } from "@augmentcode/themis/react-store";
-import type { StoreState } from "@augmentcode/themis/types";
+import { ReactStore } from "@themislib/themis/react-store";
+import type { StoreState } from "@themislib/themis/types";
 import { todosReducer } from "./todos/todos-slice";
 
 export const reactStore = new ReactStore({ todos: todosReducer });
@@ -54,7 +54,7 @@ export type AppState = StoreState<typeof reactStore>;
 
 Key rules:
 
-- Use `ReactStore` only from `@augmentcode/themis/react-store` for this React app
+- Use `ReactStore` only from `@themislib/themis/react-store` for this React app
   path.
 - Use `reactStore.createSelector(...)` for app-local selectors so state inference follows the configured store.
 - Do not add package-owned `@internal_` reducers or internal sagas.

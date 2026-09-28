@@ -10,7 +10,7 @@
  * the ordered array, and `collection.map[id]` for direct lookups.
  */
 
-import { getItems, type Collection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { getItems, type Collection } from "@themislib/themis/utils/collections/collection-utils";
 import { store } from "../store";
 import type { Todo } from "./todos-slice";
 

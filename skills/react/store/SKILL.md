@@ -1,7 +1,7 @@
 ---
 name: react/store
 description: >-
-  Use @augmentcode/themis/react-store for ReactStore imports, init/dispose, and
+  Use @themislib/themis/react-store for ReactStore imports, init/dispose, and
   runSaga/dispatch/state behavior. Defer app wiring and selector call modes to
   their React owners.
 type: sub-skill
@@ -9,9 +9,9 @@ requires:
   - react
   - core/import-boundaries
 sources:
-  - "@augmentcode/themis/react-store"
-  - "@augmentcode/themis/docs/ARCHITECTURE.md"
-  - "@augmentcode/themis/README.md"
+  - "@themislib/themis/react-store"
+  - "@themislib/themis/docs/ARCHITECTURE.md"
+  - "@themislib/themis/README.md"
 triggers:
   - ReactStore
   - react-store import
@@ -26,11 +26,11 @@ matching `core/*` skills.
 
 ## Correct import and class choice
 
-- Use `ReactStore` from `@augmentcode/themis/react-store`.
+- Use `ReactStore` from `@themislib/themis/react-store`.
 - Do not import React selector internals from `src/*` or `utils/react-selectors/*`.
 
 ```ts
-import { ReactStore } from "@augmentcode/themis/react-store";
+import { ReactStore } from "@themislib/themis/react-store";
 
 export const reactStore = new ReactStore({ todos: todosReducer });
 const dispose = reactStore.init();
@@ -53,12 +53,12 @@ and its lifecycle sections. Consumer call-mode decisions belong to
   module-level shared Preact signals.
 - `reactStore.dispatch`, `reactStore.state`, `reactStore.runSaga(sagaFn)`, and
   `reactStore.dispose()` follow the shared Store runtime behavior documented in
-  `@augmentcode/themis/docs/ARCHITECTURE.md`; saga runtime mechanics are in
+  `@themislib/themis/docs/ARCHITECTURE.md`; saga runtime mechanics are in
   [Store saga lifecycle](../../core/saga-manager/SKILL.md#store-saga-lifecycle).
 - Do not manually register package-owned `@internal_` reducers or internal sagas.
 
 ## Verification cues
 
-- Imports use `@augmentcode/themis/react-store` for `ReactStore`.
+- Imports use `@themislib/themis/react-store` for `ReactStore`.
 - React examples initialize the Store before signal selector reads.
 - The app path uses only the public ReactStore runtime and React signal selectors.
