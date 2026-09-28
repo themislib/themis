@@ -1,5 +1,5 @@
 import { take } from "typed-redux-saga";
-import { createChannelFromSelector } from "@augmentcode/themis/saga";
+import { createChannelFromSelector } from "@themislib/themis/saga";
 import { selectReady } from "../todos-selectors";
 
 export function* todosSaga() {

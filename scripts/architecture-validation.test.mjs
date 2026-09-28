@@ -32,7 +32,7 @@ describe("architecture validation gate", () => {
   it("accepts unique action, selector, saga, and source-state patterns", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export type TodosState = { todos: TodoCollection; loadStatus: "idle" | "loading"; };
         const initialState: TodosState = { todos: createCollection(), loadStatus: "idle" };
         export const addTodo = createAction("todos/add");
@@ -70,7 +70,7 @@ describe("architecture validation gate", () => {
   it("supports reviewed async-action catch suppressions", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAsyncAction } from "@themislib/themis/utils/store/create-action";
         const load = createAsyncAction("todos/load", "todos/stage");
         // eslint-disable-next-line architecture/redundant-async-action-catch -- migration recovery path
         load().promise.catch(reportError);
@@ -82,15 +82,15 @@ describe("architecture validation gate", () => {
   it("createAction placement accepts slice owners and reports non-slice modules", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const addTodo = createAction("todos/addTodo");
       `,
       "src/preferences-slice.tsx": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const updatePreference = createAction("preferences/updatePreference");
       `,
       "src/todos-actions.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const removeTodo = createAction("todos/removeTodo");
       `,
     });
@@ -138,7 +138,7 @@ describe("architecture validation gate", () => {
   it("createAction placement supports disables and leaves createAsyncAction out of scope", async () => {
     const root = await createFixture({
       "src/legacy-actions.ts": `
-        import { createAction, createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction, createAsyncAction } from "@themislib/themis/utils/store/create-action";
         // eslint-disable-next-line architecture/create-action-owner -- legacy compatibility alias kept until slice migration
         export const legacyReset = createAction("legacy/reset");
         export const loadLegacy = createAsyncAction("legacy/load", "legacy/loadSuccess", async () => ({}));
@@ -190,20 +190,20 @@ describe("architecture validation gate", () => {
   it("reports intentional architecture violations with actionable rule names", async () => {
     const root = await createFixture({
       "src/actions-a.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const addTodo = createAction("todos/add");
       `,
       "src/actions-b.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const appendTodo = createAction("todos/add");
       `,
       "src/selectors-a.ts": `
-        import { createSelector } from "@augmentcode/themis";
+        import { createSelector } from "@themislib/themis";
         export const selectTodos = createSelector((state) => state.todos.todos);
         export const selectCompletedTodos = createSelector((state) => state.todos.completedTodos);
       `,
       "src/selectors-b.ts": `
-        import { createSelector } from "@augmentcode/themis";
+        import { createSelector } from "@themislib/themis";
         export const selectTodos = createSelector((state) => state.todos.visibleTodos);
         export const selectDoneTodos = createSelector((state) => state.todos.completedTodos);
       `,
@@ -298,7 +298,7 @@ describe("architecture validation gate", () => {
   it("supports ESLint disable comments for reviewed false-positive exceptions", async () => {
     const root = await createFixture({
       "src/legacy.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         /* eslint-disable architecture/create-action-owner -- legacy actions stay outside slice until migration */
         export const addTodo = createAction("todos/add");
         // eslint-disable-next-line architecture/duplicate-action-type -- compatibility alias during migration
@@ -324,7 +324,7 @@ describe("architecture validation gate", () => {
         </script>
       `,
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export type TodosState = { updatedAtMs: number; todoIds: string[]; };
         export const loadTodos = createAction("todos/loadTodos");
       `,
@@ -359,11 +359,11 @@ describe("architecture validation gate", () => {
         </script>
       `,
       "src/actions.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
         export const reset = createAction("reset");
       `,
       "src/todos-slice.ts": `
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         export type TodosState = {
           lastLoadedAt: Date | null;
           itemsById: Map<string, Todo>;
@@ -406,8 +406,8 @@ describe("architecture validation gate", () => {
         </script>
       `,
       "src/legacy-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         // eslint-disable-next-line architecture/unnamespaced-action-type -- public compatibility action during migration
         export const reset = createAction("reset");
 
@@ -447,8 +447,8 @@ describe("architecture validation gate", () => {
         export const tooltipOpen = $state(false);
       `,
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         import { createCollection, upsertItem } from "./utils/collections/collection-utils";
         type TodoId = string;
         type Todo = { id: TodoId; text: string };
@@ -484,8 +484,8 @@ describe("architecture validation gate", () => {
         export const todosSlice = createSlice({ name: "todos", initialState: {}, reducers: {} });
       `,
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         type TodoId = string;
         type Todo = { id: TodoId; text: string };
         export type TodosState = { todos: Todo[]; todoOrder: TodoId[]; };
@@ -561,8 +561,8 @@ describe("architecture validation gate", () => {
   it("limits reducer-side-effect checks to createReducer with handler bodies", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         type TodosState = { ids: string[]; createdAt: Date };
         const initialState: TodosState = { ids: [], createdAt: new Date() };
         export const addTodo = createAction("todos/addTodo", (text) => {
@@ -616,8 +616,8 @@ describe("architecture validation gate", () => {
   it("allows reducer-side-effect Date derivation for timestamp sorting but reports stored Date state values", async () => {
     const root = await createFixture({
       "src/workspace-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         type WorkspaceEvent = { id: string; timestamp: string };
         type WorkspaceState = { events: WorkspaceEvent[]; lastSeenAt: unknown };
         const initialState: WorkspaceState = { events: [], lastSeenAt: null };
@@ -645,8 +645,8 @@ describe("architecture validation gate", () => {
   it("does not report reducer-side-effect diagnostics for action payload preparation when handlers are pure", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         type TodosState = { ids: string[] };
         const initialState: TodosState = { ids: [] };
         export const addTodo = createAction("todos/addTodo", (text) => {
@@ -676,7 +676,7 @@ describe("architecture validation gate", () => {
   it("checks only createReducer state types in slice modules for non-serializable type fields", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         export interface UnusedState {
           unusedOpenedAt: Date;
           unusedErrorsById: Map<string, Error>;
@@ -721,7 +721,7 @@ describe("architecture validation gate", () => {
   it("resolves imported createReducer state type implementations from relative project modules", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         import type { TodosState as ImportedTodosState } from "./todos-state";
         import { type SessionState } from "./session-state";
         import type { RemoteShape } from "./remote-state";
@@ -788,7 +788,7 @@ describe("architecture validation gate", () => {
   it("rejects removed package paths and forbidden RTK imports without helper-call diagnostics", async () => {
     const root = await createFixture({
       "src/root-import.ts": `
-        import { createAction } from "@augmentcode/themis";
+        import { createAction } from "@themislib/themis";
         export const addTodo = createAction("todos/addTodo");
       `,
       "src/rtk-imports.ts": `
@@ -798,10 +798,10 @@ describe("architecture validation gate", () => {
         export const todosApi = createApi({ reducerPath: "todosApi", endpoints: () => ({}) });
       `,
       "src/removed-imports.ts": `
-        import { createMiddleware } from "@augmentcode/themis/middleware";
-        import { init } from "@augmentcode/themis/init";
-        import { getReduxStore } from "@augmentcode/themis/redux-dispatch-bridge";
-        import { createReferenceChangeDetectorMiddleware } from "@augmentcode/themis/src/middleware";
+        import { createMiddleware } from "@themislib/themis/middleware";
+        import { init } from "@themislib/themis/init";
+        import { getReduxStore } from "@themislib/themis/redux-dispatch-bridge";
+        import { createReferenceChangeDetectorMiddleware } from "@themislib/themis/src/middleware";
         createMiddleware();
         createReferenceChangeDetectorMiddleware();
         createStoreContext();
@@ -818,7 +818,7 @@ describe("architecture validation gate", () => {
 
     expect(rules).toContain(architectureRules.sourceShapedPackageImport);
     expect(rules).toContain(architectureRules.forbiddenReduxApi);
-    expect(messages).toContain("Use an exported @augmentcode/themis package subpath; root/source-shaped/removed paths are not public API.");
+    expect(messages).toContain("Use an exported @themislib/themis package subpath; root/source-shaped/removed paths are not public API.");
     expect(messages).toContain("Removed middleware source files are not allowed; use Store constructor middleware or Store.addMiddleware.");
     expect(messages).toContain("Use this package's Store-first Redux utilities instead of RTK helpers.");
     expect(messages).toContain("Do not import Redux Toolkit internals/subpaths from this package source.");
@@ -837,8 +837,8 @@ describe("architecture validation gate", () => {
         export const todosSlice = createSlice({ name: "todos", initialState: {}, reducers: {} });
       `,
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         type Todo = { id: string; text: string };
         export type TodosState = {
           // eslint-disable-next-line architecture/collection-state-shape -- external API compatibility until Collection migration
@@ -895,7 +895,7 @@ describe("architecture validation gate", () => {
       `,
       "src/sagas/todos-saga.ts": `
         import { call, take } from "typed-redux-saga";
-        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@augmentcode/themis/saga";
+        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@themislib/themis/saga";
         import { selectReady } from "../todos-selectors";
         function* worker() { yield* call(console.log, "ready"); }
         export function* todosSaga() {
@@ -926,7 +926,7 @@ describe("architecture validation gate", () => {
       `,
       "src/sagas/todos-saga.ts": `
         import { call, fork, take } from "typed-redux-saga";
-        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@augmentcode/themis/saga";
+        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@themislib/themis/saga";
         import { selectReady } from "../todos/todos-selectors";
         function* worker() {}
         export function* todosSaga() {
@@ -972,7 +972,7 @@ describe("architecture validation gate", () => {
       `,
       "src/sagas/legacy-saga.ts": `
         import { call, fork, take } from "typed-redux-saga";
-        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@augmentcode/themis/saga";
+        import { waitFor, takeLatestFromSelector, createChannelFromSelector } from "@themislib/themis/saga";
         import { selectReady } from "../todos-selectors";
         function* worker() {}
         export function* legacySaga() {
@@ -997,8 +997,8 @@ describe("architecture validation gate", () => {
   it("accepts compliant Wave 3 file-structure and test-pattern hygiene", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         export type TodosState = { todos: Collection<Todo, "id">; loadStatus: "idle" | "loading"; };
         const initialState: TodosState = { todos: createCollection<Todo, "id">(), loadStatus: "idle" };
         export const addTodo = createAction("todos/addTodo");
@@ -1038,22 +1038,22 @@ describe("architecture validation gate", () => {
   it("reports Wave 3 file-structure and high-signal test-pattern violations", async () => {
     const root = await createFixture({
       "src/bad-slice.ts": `
-        import { createAction, createReducer } from "@augmentcode/themis";
+        import { createAction, createReducer } from "@themislib/themis";
         export type TodosStore = { count: number };
         const initialState: TodosStore = { count: 0 };
         export const badAction = createAction("todos/add/success");
         export const todosReducer = createReducer<TodosStore>(initialState);
       `,
       "src/todos.ts": `
-        import { createSelector } from "@augmentcode/themis";
+        import { createSelector } from "@themislib/themis";
         export const selectTodos = createSelector((state) => state.todos.todos);
       `,
       "src/orders-selectors.ts": `
-        import { createSelector } from "@augmentcode/themis";
+        import { createSelector } from "@themislib/themis";
         export const getOrders = createSelector((state) => state.orders.items);
       `,
       "src/orders/orders-selectors.ts": `
-        import { createSelector } from "@augmentcode/themis";
+        import { createSelector } from "@themislib/themis";
         export const selectOrders = createSelector((state) => state.orders.items);
       `,
       "src/todos-selectors.test.ts": `
@@ -1125,8 +1125,8 @@ describe("architecture validation gate", () => {
   it("supports rule-specific ignores for Wave 3 file-structure and test-pattern gates", async () => {
     const root = await createFixture({
       "src/legacy.ts": `
-        import { createAction } from "@augmentcode/themis/utils/store/create-action";
-        import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        import { createReducer } from "@themislib/themis/utils/store/create-reducer";
         import { store } from "$lib/store";
         // eslint-disable-next-line architecture/state-type-name -- legacy public type rename tracked with consumer migration
         export type LegacyShape = { count: number };

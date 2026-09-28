@@ -25,7 +25,7 @@ it('executes the documented narrowing refresh only in an isolated fixture', asyn
   const write = async (path, content) => { await mkdir(dirname(path), { recursive: true }); await writeFile(path, content); };
   const paths = ['SKILL.md', 'setup/SKILL.md', 'core/SKILL.md', 'react/SKILL.md', 'svelte/SKILL.md', 'streaming/SKILL.md'];
   await Promise.all([
-    write(join(packageRoot, 'package.json'), JSON.stringify({ name: '@augmentcode/themis', version: '0.0.0' })),
+    write(join(packageRoot, 'package.json'), JSON.stringify({ name: '@themislib/themis', version: '0.0.0' })),
     ...paths.map((path) => write(join(packageRoot, 'skills', path), path)),
     write(join(destination, 'core/SKILL.md'), 'user-created without a manifest'),
   ]);

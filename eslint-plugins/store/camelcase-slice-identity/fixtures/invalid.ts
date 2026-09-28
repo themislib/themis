@@ -1,7 +1,7 @@
-import { ReactStore } from "@augmentcode/themis/react-store";
-import { Store } from "@augmentcode/themis/svelte-store";
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
-import { createAction, createAsyncAction } from "@augmentcode/themis/utils/store/create-action";
+import { ReactStore } from "@themislib/themis/react-store";
+import { Store } from "@themislib/themis/svelte-store";
+import { StreamingStore } from "@themislib/themis/streaming-store";
+import { createAction, createAsyncAction } from "@themislib/themis/utils/store/create-action";
 import { todoItemsReducer } from "./todo-items-slice";
 
 export const addTodo = createAction("todo-items/add");

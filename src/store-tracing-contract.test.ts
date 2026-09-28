@@ -1,27 +1,27 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ReactStore } from '@augmentcode/themis/react-store';
-import { Store } from '@augmentcode/themis/svelte-store';
-import { StreamingStore } from '@augmentcode/themis/streaming-store';
+import { ReactStore } from '@themislib/themis/react-store';
+import { Store } from '@themislib/themis/svelte-store';
+import { StreamingStore } from '@themislib/themis/streaming-store';
 import type {
   ReduxActionTraceEvent as ReactReduxActionTraceEvent,
   StoreLoggerFactory as ReactStoreLoggerFactory,
   StoreTraceStreams as ReactStoreTraceStreams,
-} from '@augmentcode/themis/react-store';
+} from '@themislib/themis/react-store';
 import type {
   ReduxActionTraceEvent as SvelteReduxActionTraceEvent,
   StoreLoggerFactory as SvelteStoreLoggerFactory,
   StoreTraceStreams as SvelteStoreTraceStreams,
-} from '@augmentcode/themis/svelte-store';
+} from '@themislib/themis/svelte-store';
 import type {
   ReduxActionTraceEvent as StreamingReduxActionTraceEvent,
   StoreLoggerFactory as StreamingStoreLoggerFactory,
   StoreTraceStreams as StreamingStoreTraceStreams,
-} from '@augmentcode/themis/streaming-store';
+} from '@themislib/themis/streaming-store';
 import type {
   ReduxActionTraceEvent,
   StoreLoggerFactory,
   StoreTraceStreams,
-} from '@augmentcode/themis/types';
+} from '@themislib/themis/types';
 
 vi.mock('./utils/runtime-svelte/utils', () => ({
   getStoreContext: vi.fn(() => undefined),

@@ -1,4 +1,4 @@
-import { waitFor } from "@augmentcode/themis/saga";
+import { waitFor } from "@themislib/themis/saga";
 import { selectReady } from "../todos-selectors";
 
 export function* todosSaga() {

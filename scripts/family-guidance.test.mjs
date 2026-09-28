@@ -92,8 +92,8 @@ const diagnostics = (source) => {
   const fixture = resolve(root, "scripts/family-example-store.ts");
   const files = new Map([
     [file, source.replaceAll('"$lib/store"', '"./family-example-store"')],
-    [fixture, `import { Store } from "@augmentcode/themis/svelte-store";
-      import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+    [fixture, `import { Store } from "@themislib/themis/svelte-store";
+      import { createReducer } from "@themislib/themis/utils/store/create-reducer";
       type Project = { id: string; title: string };
       const initialState: { items: Record<string, Project> } = { items: {} };
       export const store = new Store({ projects: createReducer(initialState) });`],
@@ -102,7 +102,7 @@ const diagnostics = (source) => {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext,
     moduleResolution: ts.ModuleResolutionKind.Bundler, jsx: ts.JsxEmit.ReactJSX,
     strict: true, noEmit: true, skipLibCheck: true, esModuleInterop: true,
-    baseUrl: root, paths: { "@augmentcode/themis/*": ["src/*"] },
+    baseUrl: root, paths: { "@themislib/themis/*": ["src/*"] },
   };
   const host = ts.createCompilerHost(options);
   const read = host.readFile.bind(host);
@@ -207,7 +207,7 @@ describe("family skill executable and type examples", () => {
   it("F4: rejects the original bare Store annotation in the actual helper", () => {
     const source = block("skills/svelte/selectors/SKILL.md", "### 5. Pass a configured Store");
     const bareStore = source
-      .replace('import type { store as appStore } from "$lib/store";', 'import type { Store } from "@augmentcode/themis/svelte-store";')
+      .replace('import type { store as appStore } from "$lib/store";', 'import type { Store } from "@themislib/themis/svelte-store";')
       .replace("store: typeof appStore", "store: Store");
     expect(bareStore).not.toBe(source);
     expect(diagnostics(bareStore)).toEqual([expect.stringMatching(/^TS2339: Property 'projects' does not exist/)]);
@@ -530,7 +530,7 @@ describe("family skill executable and type examples", () => {
     cleanup.push(observe(b, (value) => values.push(value)));
     expect(values).toEqual(["a:2"]);
     expect(() => bind(Kefir.constant(first.state))).toThrow(/getStoreStateStream/);
-    const sourceTypes = `import { StreamingStore } from "@augmentcode/themis/streaming-store";
+    const sourceTypes = `import { StreamingStore } from "@themislib/themis/streaming-store";
       import Kefir from "kefir";
       const store = new StreamingStore({});
       const selectCount = store.createSelector(() => 1);

@@ -1,4 +1,4 @@
-import { Store } from "@augmentcode/themis/svelte-store";
+import { Store } from "@themislib/themis/svelte-store";
 import { todosSaga } from "./sagas/todos-saga";
 import { todosReducer } from "./todos-slice";
 

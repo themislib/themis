@@ -47,7 +47,7 @@ export function UserLoader({ userId }: { userId: string }) {
 
 ```ts
 import { call, put, takeLatest } from "typed-redux-saga";
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAction } from "@themislib/themis/utils/store/create-action";
 import { setUsername } from "../users-slice";
 
 type UserResponse = { name: string };

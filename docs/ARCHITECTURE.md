@@ -10,14 +10,14 @@ Run `npm run validate:architecture` before accepting or releasing a change that 
 
 Passing output is exit code 0 with `[architecture-validation] no architecture gate violations found` and a scanned source-file count; test-pattern gates also report the scanned test-file count when test files are present. `npm run validate:release` runs this gate first, so release validation cannot pass while architecture violations remain.
 
-The package CLI no longer exposes a `validate-architecture` command (breaking change for consumers that used it). Consumer apps get architecture checking by importing one of the exported ESLint domain root configs from `@augmentcode/themis/eslint-plugins` and running ESLint against app code. Use the `npm run ...` commands in this section only inside this repository's maintainer workflow.
+The package CLI no longer exposes a `validate-architecture` command (breaking change for consumers that used it). Consumer apps get architecture checking by importing one of the exported ESLint domain root configs from `@themislib/themis/eslint-plugins` and running ESLint against app code. Use the `npm run ...` commands in this section only inside this repository's maintainer workflow.
 
-The ESLint migration framework lives in `eslint-plugins/`. Parent projects use the static named root configs and `plugins` per-rule config map exported from `@augmentcode/themis/eslint-plugins`. Retained standalone rule plugin subpaths under `@augmentcode/themis/eslint-plugins/plugins` remain lower-level package surfaces for selected-rule composition and validator internals, but the root entrypoint exposes no raw plugin object, helper builders, compatibility aliases, or customization APIs. The older `@augmentcode/themis/eslint-architecture` subpaths are removed; use `/eslint-plugins` only for package ESLint imports. Maintainer commands remain compatible: `npm run validate:architecture` runs the repo-local architecture validator, and `npm run validate:release` runs architecture before build/pack/import checks. The resource-heavy `eslint-plugins/*.test.mjs` rule suites have been removed; use lightweight package/API validation plus direct `eslint-plugins/index.mjs` import/config smoke checks when editing local ESLint rules or fixtures. Cross-file aggregate checks such as duplicate action type strings, selector exports/implementations, saga names, and saga registrations run in the ESLint-backed architecture validator runner. The ESLint framework tests, docs, and fixtures are dev-only and are intentionally excluded from package contents; the architecture validator script (`scripts/validate-architecture.mjs`) is also dev-only and unpacked, while the `eslint-plugins/` rule runtime remains packed for consumer ESLint configs.
+The ESLint migration framework lives in `eslint-plugins/`. Parent projects use the static named root configs and `plugins` per-rule config map exported from `@themislib/themis/eslint-plugins`. Retained standalone rule plugin subpaths under `@themislib/themis/eslint-plugins/plugins` remain lower-level package surfaces for selected-rule composition and validator internals, but the root entrypoint exposes no raw plugin object, helper builders, compatibility aliases, or customization APIs. The older `@themislib/themis/eslint-architecture` subpaths are removed; use `/eslint-plugins` only for package ESLint imports. Maintainer commands remain compatible: `npm run validate:architecture` runs the repo-local architecture validator, and `npm run validate:release` runs architecture before build/pack/import checks. The resource-heavy `eslint-plugins/*.test.mjs` rule suites have been removed; use lightweight package/API validation plus direct `eslint-plugins/index.mjs` import/config smoke checks when editing local ESLint rules or fixtures. Cross-file aggregate checks such as duplicate action type strings, selector exports/implementations, saga names, and saga registrations run in the ESLint-backed architecture validator runner. The ESLint framework tests, docs, and fixtures are dev-only and are intentionally excluded from package contents; the architecture validator script (`scripts/validate-architecture.mjs`) is also dev-only and unpacked, while the `eslint-plugins/` rule runtime remains packed for consumer ESLint configs.
 
 Consumer `eslint.config.js` files should import exactly one composed domain root config for each app path:
 
 ```js
-import { svelte } from "@augmentcode/themis/eslint-plugins";
+import { svelte } from "@themislib/themis/eslint-plugins";
 
 export default svelte;
 ```
@@ -124,8 +124,8 @@ Before adding any helper, wrapper, or shared utility:
 The store state is a flat record of slice states. Infer the consumer-facing state type from the configured `Store`, `ReactStore`, or `StreamingStore` instance:
 
 ```typescript
-import { Store } from '@augmentcode/themis/svelte-store';
-import type { StoreState } from '@augmentcode/themis/types';
+import { Store } from '@themislib/themis/svelte-store';
+import type { StoreState } from '@themislib/themis/types';
 
 export const store = new Store({
   todos: todosReducer,
@@ -184,12 +184,12 @@ Key middleware:
 
 ## Store Initialization
 
-The recommended Svelte-readable setup uses the canonical `Store` class exported by `@augmentcode/themis/svelte-store`:
+The recommended Svelte-readable setup uses the canonical `Store` class exported by `@themislib/themis/svelte-store`:
 
 ```typescript
 import { onDestroy, onMount } from 'svelte';
-import { Store } from '@augmentcode/themis/svelte-store';
-import type { StoreState } from '@augmentcode/themis/types';
+import { Store } from '@themislib/themis/svelte-store';
+import type { StoreState } from '@themislib/themis/types';
 import { counterReducer } from './slices/counter/counter-slice';
 import { counterSaga } from './slices/counter/sagas/counter-saga';
 
@@ -202,7 +202,7 @@ onDestroy(dispose);
 onMount(() => store.runSaga(counterSaga));
 ```
 
-Pass only application-owned reducers to the concrete Store constructor map, then start application-owned sagas explicitly with `store.runSaga(sagaFn)` after `store.init()`. `Store` is the Svelte-readable class from `@augmentcode/themis/svelte-store`; `ReactStore` is exported separately from `@augmentcode/themis/react-store` for Preact React signal selector results and React `.useValue(...)` component reads; `StreamingStore` is exported separately from `@augmentcode/themis/streaming-store` for Kefir/observable selector results. All variants manage package-owned internals automatically under reserved `@internal_` names: internal reducers such as `@internal_storeUtility` are package-managed, and the internal saga manager starts during Store initialization.
+Pass only application-owned reducers to the concrete Store constructor map, then start application-owned sagas explicitly with `store.runSaga(sagaFn)` after `store.init()`. `Store` is the Svelte-readable class from `@themislib/themis/svelte-store`; `ReactStore` is exported separately from `@themislib/themis/react-store` for Preact React signal selector results and React `.useValue(...)` component reads; `StreamingStore` is exported separately from `@themislib/themis/streaming-store` for Kefir/observable selector results. All variants manage package-owned internals automatically under reserved `@internal_` names: internal reducers such as `@internal_storeUtility` are package-managed, and the internal saga manager starts during Store initialization.
 
 Call `store.init(initialState?)` during root component initialization and register its returned disposer with `onDestroy`. That disposer delegates to `store.dispose()`, so `onDestroy(dispose)` remains the normal Svelte root-layout pattern while direct `store.dispose()` is available for tests or other code that owns the Store lifetime. Pass preloaded state directly to `store.init(initialState)` when needed. Call `store.initDevTool()` explicitly after `store.init()` only when the runtime should be exposed to devtools; it returns its own cleanup and is also cleaned up by `store.dispose()`.
 
@@ -293,7 +293,7 @@ Accessed in sagas via `yield* getContext("reduxStore")`. This is a package inter
 
 ### Actions
 
-Actions are plain objects describing events. Created with `createAction()` and `createAsyncAction()` from the explicit utility leaf `@augmentcode/themis/utils/store/create-action`.
+Actions are plain objects describing events. Created with `createAction()` and `createAsyncAction()` from the explicit utility leaf `@themislib/themis/utils/store/create-action`.
 
 → See [REDUCERS.md](./REDUCERS.md) for action creation patterns.
 

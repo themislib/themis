@@ -9,7 +9,7 @@ requires:
   - react
   - react/selectors
 sources:
-  - "@augmentcode/themis/react-store"
+  - "@themislib/themis/react-store"
   - ../selectors/SKILL.md
 triggers:
   - React selector scheduling
@@ -23,7 +23,7 @@ triggers:
 > consumers must not import scheduler internals, wrap selector outputs in their
 > own debounce layer, or treat selector emissions as event/audit logs.
 
-Public facade: `@augmentcode/themis/react-store`. Create selectors through the
+Public facade: `@themislib/themis/react-store`. Create selectors through the
 configured `ReactStore` instance and tune selector coalescing only through
 `ReactStore` options such as `throttledSelectorFrequency`.
 
@@ -73,7 +73,7 @@ owns cadence, not component/hook/handler/saga boundary rules.
 ### Configure coalescing at the ReactStore owner
 
 ```ts
-import { ReactStore } from "@augmentcode/themis/react-store";
+import { ReactStore } from "@themislib/themis/react-store";
 import { pointerReducer } from "./pointer-slice";
 
 export const reactStore = new ReactStore(
@@ -165,4 +165,4 @@ export function* pointerAuditSaga() {
 
 - `../selectors/SKILL.md` — building `ReactStore` selectors.
 - `../selector-lifecycle/SKILL.md` — choosing direct signal, `.useValue`, `.select`, `.effect`, and `.withStore` call modes.
-- `@augmentcode/themis/docs/SELECTORS.md` — selector memoization and lifecycle rules.
+- `@themislib/themis/docs/SELECTORS.md` — selector memoization and lifecycle rules.

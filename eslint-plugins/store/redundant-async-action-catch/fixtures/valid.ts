@@ -1,8 +1,8 @@
-import { createAsyncAction, createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAsyncAction, createAction } from "@themislib/themis/utils/store/create-action";
 import { createAsyncAction as unrelatedFactory } from "other-library";
 import { loadExternal } from "./external-actions";
-import type { createAsyncAction as typeOnlyFactory } from "@augmentcode/themis/utils/store/create-action";
-import { type createAsyncAction as inlineTypeFactory } from "@augmentcode/themis/utils/store/create-action";
+import type { createAsyncAction as typeOnlyFactory } from "@themislib/themis/utils/store/create-action";
+import { type createAsyncAction as inlineTypeFactory } from "@themislib/themis/utils/store/create-action";
 
 const loadTodos = createAsyncAction("todos/load", "todos/loadStage");
 const action = loadTodos();

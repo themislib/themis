@@ -45,7 +45,7 @@ The shared Collection policy applies to React too; primitive arrays remain valid
 
 ```ts
 import { reactStore } from "../react-store";
-import { getItems } from "@augmentcode/themis/utils/collections/collection-utils";
+import { getItems } from "@themislib/themis/utils/collections/collection-utils";
 
 export const selectCartItems = reactStore.createSelector((state) => getItems(state.cart.collection));
 export const selectDiscountCode = reactStore.createSelector((state) => state.cart.discountCode);
@@ -77,7 +77,7 @@ export function CartSummary() {
 import { expect, it } from "vitest";
 import { selectCartTotal } from "../store/cart/cart-selectors";
 import { reactStore } from "../react-store";
-import { createCollection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { createCollection } from "@themislib/themis/utils/collections/collection-utils";
 
 it("selects the cart total from explicit state", () => {
   const disposeStore = reactStore.init();

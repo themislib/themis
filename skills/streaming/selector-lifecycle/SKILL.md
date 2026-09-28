@@ -9,9 +9,9 @@ requires:
   - streaming
   - streaming/selectors
 sources:
-  - "@augmentcode/themis/streaming-store"
+  - "@themislib/themis/streaming-store"
   - package-internal streaming selector implementation
-  - "@augmentcode/themis/docs/SELECTORS.md"
+  - "@themislib/themis/docs/SELECTORS.md"
 triggers:
   - stream selector lifecycle
   - observe selector stream

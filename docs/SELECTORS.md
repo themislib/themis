@@ -33,13 +33,13 @@ Selectors are pure functions that extract and derive data from the Redux store. 
 
 ## Creating Selectors
 
-Use the configured app Store as the public selector creation API for production app-local selectors. `Store` is the canonical Svelte-readable class available from `@augmentcode/themis/svelte-store`, `ReactStore` from `@augmentcode/themis/react-store` returns Preact React signals from selector calls and adds React `.useValue(...)`, and `StreamingStore` from `@augmentcode/themis/streaming-store` returns Kefir streams from selector calls. If shared code needs reusable selector logic, pass a configured Store into that helper and call `store.createSelector(...)` at the app integration boundary.
+Use the configured app Store as the public selector creation API for production app-local selectors. `Store` is the canonical Svelte-readable class available from `@themislib/themis/svelte-store`, `ReactStore` from `@themislib/themis/react-store` returns Preact React signals from selector calls and adds React `.useValue(...)`, and `StreamingStore` from `@themislib/themis/streaming-store` returns Kefir streams from selector calls. If shared code needs reusable selector logic, pass a configured Store into that helper and call `store.createSelector(...)` at the app integration boundary.
 
 In application slices, define selectors in the owning slice directory's single `*-selectors.ts` module. A slice directory should have exactly one selectors owner next to exactly one `*-slice.ts`; if a feature grows multiple logical slices, split it into multiple slice directories instead of adding extra selectors files beside one slice owner.
 
 ```typescript
-import { Store } from "@augmentcode/themis/svelte-store";
-import type { StoreInstanceState } from "@augmentcode/themis/types";
+import { Store } from "@themislib/themis/svelte-store";
+import type { StoreInstanceState } from "@themislib/themis/types";
 import { todosReducer } from "./todos-slice";
 
 export const store = new Store({ todos: todosReducer });
@@ -145,7 +145,7 @@ only at application teardown, after its components unmount and manual signal
 subscriptions stop—not when an individual consuming component unmounts.
 
 ```tsx
-import { ReactStore } from "@augmentcode/themis/react-store";
+import { ReactStore } from "@themislib/themis/react-store";
 import { todosReducer } from "./todos-slice";
 
 export const reactStore = new ReactStore({ todos: todosReducer });
@@ -217,7 +217,7 @@ live while needed; the owner calls `disposeStreamingExample()` on shutdown to
 unsubscribe before disposing the Store. Stop any other consumers first too.
 
 ```typescript
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
+import { StreamingStore } from "@themislib/themis/streaming-store";
 import { todosReducer } from "./todos-slice";
 
 export const streamStore = new StreamingStore({ todos: todosReducer });
@@ -308,7 +308,7 @@ or event logs. Keep production React consumers within normal signal tracking.
 Selector tracing is a default-off, opt-in diagnostic available in development and production builds. Configure it in the third (options) argument of `Store`, `ReactStore`, or `StreamingStore`; pass `undefined` for middleware when there is no middleware to configure:
 
 ```typescript
-import { Store } from "@augmentcode/themis/svelte-store";
+import { Store } from "@themislib/themis/svelte-store";
 import { todosReducer } from "./todos-slice";
 
 export const store = new Store(
@@ -519,7 +519,7 @@ workflow and disable tracing on the next Store construction.
 For working with Collections, keep collection access behind Store-bound selectors and use the public collection utilities inside those selector callbacks:
 
 ```typescript
-import { getItem, getItems, type Collection } from "@augmentcode/themis/utils/collections/collection-utils";
+import { getItem, getItems, type Collection } from "@themislib/themis/utils/collections/collection-utils";
 import { store } from "$lib/store";
 
 // Get the collection itself

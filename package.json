@@ -1,5 +1,5 @@
 {
-  "name": "@augmentcode/themis",
+  "name": "@themislib/themis",
   "version": "0.3.2",
   "publishConfig": {
     "access": "public"

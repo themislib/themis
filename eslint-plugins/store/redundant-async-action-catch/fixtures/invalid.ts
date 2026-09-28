@@ -1,5 +1,5 @@
-import { createAsyncAction as createRequest } from "@augmentcode/themis/utils/store/create-action";
-import * as actions from "@augmentcode/themis/utils/store/create-action";
+import { createAsyncAction as createRequest } from "@themislib/themis/utils/store/create-action";
+import * as actions from "@themislib/themis/utils/store/create-action";
 
 const loadTodos = createRequest("todos/load", "todos/loadStage");
 loadTodos().promise.catch(() => undefined);

@@ -160,7 +160,7 @@ const packWithout = (path) => [
 
 describe("package metadata", () => {
   it("wires package scripts for testing, validation, and npm packaging", () => {
-    expect(packageJson.name).toBe("@augmentcode/themis");
+    expect(packageJson.name).toBe("@themislib/themis");
     expect(packageJson.version).toMatch(/^\d+\.\d+\.\d+$/);
     expect(packageJson.bin).toEqual({ "themis": "./scripts/cli.mjs" });
     expect(packageJson.scripts.build).toBe("vite build");
@@ -831,7 +831,7 @@ describe("package metadata", () => {
       "saga-local-selector",
       architectureRulePlugins["saga-local-selector"],
       `
-        import { Store as ThemisStore } from "@augmentcode/themis/svelte-store";
+        import { Store as ThemisStore } from "@themislib/themis/svelte-store";
         import { createSelector } from "../utils/selector-core/create-cached-selector";
 
         const store = new ThemisStore();
@@ -987,7 +987,7 @@ describe("package metadata", () => {
       architectureRulePlugins["no-extra-selector-caching"],
       `
         import { derived } from "svelte/store";
-        import { Store } from "@augmentcode/themis/svelte-store";
+        import { Store } from "@themislib/themis/svelte-store";
         import { selectTodos } from "../todos/todos-selectors";
 
         export const store = new Store({ todos: todosReducer }, undefined, { throttledSelectorFrequency: 120 });
@@ -1019,7 +1019,7 @@ describe("package metadata", () => {
       "selector-argument-stability",
       architectureRulePlugins["selector-argument-stability"],
       `
-        import { waitFor, takeEveryFromSelector } from "@augmentcode/themis/saga";
+        import { waitFor, takeEveryFromSelector } from "@themislib/themis/saga";
         import { selectTodoById, selectTodosByFilter } from "../todos/todos-selectors";
 
         export const selectTodoByObject = store.createSelector((state, { id }) => state.todos.map[id]);
@@ -1057,7 +1057,7 @@ describe("package metadata", () => {
       "selector-argument-stability",
       architectureRulePlugins["selector-argument-stability"],
       `
-        import { waitFor, takeEveryFromSelector } from "@augmentcode/themis/saga";
+        import { waitFor, takeEveryFromSelector } from "@themislib/themis/saga";
         import { selectTodoById, selectTodosByFilter } from "../todos/todos-selectors";
 
         const stableFilter = { status: "open" };
@@ -1114,8 +1114,8 @@ describe("package metadata", () => {
     }
     for (const root of [store, svelte, react, streaming]) expect(selectedRuleIdsFromConfig(root)).toContain(ruleId);
     expect(selectedRuleIdsFromConfig(core)).not.toContain(ruleId);
-    const standalone = await import("@augmentcode/themis/eslint-plugins/plugins/redundant-async-action-catch");
-    const collection = await import("@augmentcode/themis/eslint-plugins/plugins");
+    const standalone = await import("@themislib/themis/eslint-plugins/plugins/redundant-async-action-catch");
+    const collection = await import("@themislib/themis/eslint-plugins/plugins");
     expect(standalone.default).toBe(plugin);
     expect(collection.redundantAsyncActionCatchPlugin).toBe(plugin);
   });

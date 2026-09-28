@@ -15,7 +15,7 @@
 
 `waitFor` is a saga utility that pauses execution until a selector's value matches an expected condition. It's useful for coordinating async operations that depend on state changes — for example, waiting for data to finish loading before proceeding.
 
-**Import:** `import { waitFor } from "@augmentcode/themis/saga"` (the public `@augmentcode/themis/saga` subpackage; the internal implementation lives in `src/slices/store-utility/sagas/waitFor.ts` and must not be imported directly)
+**Import:** `import { waitFor } from "@themislib/themis/saga"` (the public `@themislib/themis/saga` subpackage; the internal implementation lives in `src/slices/store-utility/sagas/waitFor.ts` and must not be imported directly)
 
 ## Function Signature
 
@@ -73,7 +73,7 @@ waitFor(selector, args, predicate, timeout?)
 ### Basic: Wait for a Boolean Flag
 
 ```typescript
-import { waitFor } from "@augmentcode/themis/saga";
+import { waitFor } from "@themislib/themis/saga";
 
 function* mySaga() {
   // Wait for loading to complete

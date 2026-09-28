@@ -39,9 +39,9 @@ function isRuntimeImportSpecifier(declaration, specifier) {
 }
 
 const storeConstructorByImportSource = new Map([
-  ["@augmentcode/themis/svelte-store", "Store"],
-  ["@augmentcode/themis/react-store", "ReactStore"],
-  ["@augmentcode/themis/streaming-store", "StreamingStore"],
+  ["@themislib/themis/svelte-store", "Store"],
+  ["@themislib/themis/react-store", "ReactStore"],
+  ["@themislib/themis/streaming-store", "StreamingStore"],
 ]);
 
 const storeTypeDeclarationFiles = new Map([

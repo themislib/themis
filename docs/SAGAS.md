@@ -178,14 +178,14 @@ pass plain, stable selector arguments just as you would to `.effect(...)`; do no
 pass or subscribe to direct Svelte `Readable`, React `ReadonlySignal`, or Kefir
 `Observable` selector outputs.
 
-**Public API:** `@augmentcode/themis/saga`
+**Public API:** `@themislib/themis/saga`
 
 ### `takeLatestFromSelector` — Most Common
 
 Cancel previous worker when a new value arrives:
 
 ```typescript
-import { takeLatestFromSelector } from "@augmentcode/themis/saga";
+import { takeLatestFromSelector } from "@themislib/themis/saga";
 
 function* watchCurrentItem() {
   yield* takeLatestFromSelector(selectCurrentItemId, function* ({ payload, prevPayload }) {
@@ -199,7 +199,7 @@ function* watchCurrentItem() {
 ### `takeEveryFromSelector` — Spawn for Each Change
 
 ```typescript
-import { takeEveryFromSelector } from "@augmentcode/themis/saga";
+import { takeEveryFromSelector } from "@themislib/themis/saga";
 
 function* watchAllChanges() {
   yield* takeEveryFromSelector(selectSomeValue, function* ({ payload }) {
@@ -211,7 +211,7 @@ function* watchAllChanges() {
 ### `takeLeadingFromSelector` — Ignore While Running
 
 ```typescript
-import { takeLeadingFromSelector } from "@augmentcode/themis/saga";
+import { takeLeadingFromSelector } from "@themislib/themis/saga";
 
 function* watchWithThrottle() {
   yield* takeLeadingFromSelector(selectSomeValue, function* ({ payload }) {
@@ -246,7 +246,7 @@ require or receive a Svelte readable state wrapper, React signal, or Kefir
 observable from saga context.
 
 ```typescript
-import { createChannelFromSelector } from "@augmentcode/themis/saga";
+import { createChannelFromSelector } from "@themislib/themis/saga";
 
 function* complexWatcher() {
   const channel = yield* createChannelFromSelector(mySelector);
@@ -321,7 +321,7 @@ Use `retryWithTimeout` when a saga operation may fail transiently but should not
 
 ```typescript
 import { call, put } from "typed-redux-saga";
-import { retryWithTimeout } from "@augmentcode/themis/saga";
+import { retryWithTimeout } from "@themislib/themis/saga";
 
 function* syncRemoteState() {
   const outcome = yield* retryWithTimeout(
@@ -345,7 +345,7 @@ Use `wrapStreamingGenerator` to consume an `AsyncGenerator` from saga code. It f
 
 ```typescript
 import { call, put } from "typed-redux-saga";
-import { wrapStreamingGenerator } from "@augmentcode/themis/saga";
+import { wrapStreamingGenerator } from "@themislib/themis/saga";
 
 function* consumeStream(
   openStream: (signal: AbortSignal) => AsyncGenerator<MessageChunk, MessageChunk | null | undefined, unknown>
@@ -420,7 +420,7 @@ These actions and the reducer state path are package internals unless they are i
 Saga monitoring is disabled by default. To observe redux-saga effects with the Store-owned monitor, pass `{ sagaMonitor: true }` through the same third Store constructor options object used for selector scheduling:
 
 ```typescript
-import { Store } from "@augmentcode/themis/svelte-store";
+import { Store } from "@themislib/themis/svelte-store";
 import { counterReducer } from "./counter-slice";
 
 export const store = new Store(

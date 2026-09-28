@@ -7,7 +7,7 @@
  */
 
 import { cancel, delay, fork, put, select, take, takeEvery } from "typed-redux-saga";
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
+import { createAction } from "@themislib/themis/utils/store/create-action";
 import { increment, type CounterState } from "../counter-slice";
 
 type CounterSagaState = {

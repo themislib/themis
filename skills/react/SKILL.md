@@ -15,9 +15,9 @@ sources:
   - ./selector-lifecycle/SKILL.md
   - ./selector-scheduling/SKILL.md
   - ./migration/SKILL.md
-  - "@augmentcode/themis/README.md"
-  - "@augmentcode/themis/docs/SELECTORS.md"
-  - "@augmentcode/themis/react-store"
+  - "@themislib/themis/README.md"
+  - "@themislib/themis/docs/SELECTORS.md"
+  - "@themislib/themis/react-store"
 triggers:
   - ReactStore
   - react-store import
@@ -38,7 +38,7 @@ triggers:
 
 Use this root for React-specific `themis` work when the touched app or
 code path has React evidence: React components/hooks, JSX/TSX UI, imports from
-`react`, `ReactStore` from `@augmentcode/themis/react-store`, or Preact React signal
+`react`, `ReactStore` from `@themislib/themis/react-store`, or Preact React signal
 selector consumption. Generic Redux/redux-saga guidance remains in `../core/`.
 
 ## React Store family rule
@@ -68,7 +68,7 @@ owns runtime bootstrap. Adoption of existing state uses the migration
 
 ## Routing rules
 
-- Use `ReactStore` only from `@augmentcode/themis/react-store`.
+- Use `ReactStore` only from `@themislib/themis/react-store`.
 - Create production app-local React selectors through the configured
   `ReactStore` instance: `reactStore.createSelector(...)`.
 - Signal-first consumers and necessary plain-value fallbacks follow
@@ -87,8 +87,8 @@ selector call modes and scheduling, Store lifecycle, and migration in full.
 ## Verification cues
 
 - Examples import package APIs only from public subpaths such as
-  `@augmentcode/themis/react-store`, `@augmentcode/themis/saga`, and
-  `@augmentcode/themis/types`.
+  `@themislib/themis/react-store`, `@themislib/themis/saga`, and
+  `@themislib/themis/types`.
 - React guidance states that direct selector calls returning signals are preferred
   for React consumers, while `.useValue(...args)` returns plain `R` only as a necessary
   hook/plain-value fallback.

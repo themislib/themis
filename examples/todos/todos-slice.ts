@@ -10,8 +10,8 @@
  * This is the recommended pattern for any list of entities that need ID-based access.
  */
 
-import { createAction } from "@augmentcode/themis/utils/store/create-action";
-import { createReducer } from "@augmentcode/themis/utils/store/create-reducer";
+import { createAction } from "@themislib/themis/utils/store/create-action";
+import { createReducer } from "@themislib/themis/utils/store/create-reducer";
 import {
   type Collection,
   createCollection,
@@ -19,7 +19,7 @@ import {
   removeItem,
   updateItem,
   filterCollection,
-} from "@augmentcode/themis/utils/collections/collection-utils";
+} from "@themislib/themis/utils/collections/collection-utils";
 
 // --- Types ---
 

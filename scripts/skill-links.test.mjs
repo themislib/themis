@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 const repositoryRoot = new URL("../", import.meta.url);
 const skillsRoot = new URL("../skills/", import.meta.url);
 const docsRoot = new URL("../docs/", import.meta.url);
-const packagePrefix = "@augmentcode/themis/";
+const packagePrefix = "@themislib/themis/";
 const packageDocsPrefix = `${packagePrefix}docs/`;
 
 async function collectSkillFiles(directory) {
@@ -27,7 +27,7 @@ async function collectSkillFiles(directory) {
 function findDocumentationReferences(content) {
   const withoutExternalUrls = content.replace(/https?:\/\/\S+/g, "");
   const references = [];
-  const pattern = /(?:@augmentcode\/themis\/)?docs\/[A-Za-z0-9_-]+\.md(?:#[A-Za-z0-9_-]+)?|(?:@augmentcode\/themis\/)?README\.md|augmentcode\/themis:docs\/[A-Za-z0-9_-]+\.md(?:#[A-Za-z0-9_-]+)?/g;
+  const pattern = /(?:@themislib\/themis\/)?docs\/[A-Za-z0-9_-]+\.md(?:#[A-Za-z0-9_-]+)?|(?:@themislib\/themis\/)?README\.md|themislib\/themis:docs\/[A-Za-z0-9_-]+\.md(?:#[A-Za-z0-9_-]+)?/g;
 
   for (const match of withoutExternalUrls.matchAll(pattern)) {
     references.push(match[0]);
@@ -220,18 +220,18 @@ describe("skill documentation references", () => {
   it("ignores sibling skill links and external documentation URLs", () => {
     expect(
       findDocumentationReferences(
-        "`../core/SKILL.md` and https://example.com/docs/README.md stay local/external; use `@augmentcode/themis/docs/TESTING.md`."
+        "`../core/SKILL.md` and https://example.com/docs/README.md stay local/external; use `@themislib/themis/docs/TESTING.md`."
       )
-    ).toEqual(["@augmentcode/themis/docs/TESTING.md"]);
+    ).toEqual(["@themislib/themis/docs/TESTING.md"]);
   });
 
   it("requires absolute package sources to be quoted without restricting relative or external sources", async () => {
-    const unquoted = "---\nsources:\n  - @augmentcode/themis/docs/TESTING.md\n---";
-    const quoted = '---\nsources:\n  - "@augmentcode/themis/docs/TESTING.md"\n---';
+    const unquoted = "---\nsources:\n  - @themislib/themis/docs/TESTING.md\n---";
+    const quoted = '---\nsources:\n  - "@themislib/themis/docs/TESTING.md"\n---';
     const allowed = "---\nsources:\n  - ../core/SKILL.md\n  - https://example.com/docs/TESTING.md\n---";
 
     expect(findUnquotedPackageSourceReferences(unquoted)).toEqual([
-      "@augmentcode/themis/docs/TESTING.md",
+      "@themislib/themis/docs/TESTING.md",
     ]);
     expect(findUnquotedPackageSourceReferences(quoted)).toEqual([]);
     expect(findUnquotedPackageSourceReferences(allowed)).toEqual([]);
@@ -265,7 +265,7 @@ describe("skill documentation references", () => {
         }
       }
       for (const reference of findDocumentationReferences(content)) {
-        if (reference === "README.md" || reference.startsWith("docs/") || reference.startsWith("augmentcode/themis:")) {
+        if (reference === "README.md" || reference.startsWith("docs/") || reference.startsWith("themislib/themis:")) {
           invalidReferences.push(`${file.pathname}: ${reference}`);
         } else if (reference.startsWith(packageDocsPrefix)) {
           packageDocuments.add(documentationTarget(reference));
@@ -331,12 +331,12 @@ describe("skill section references", () => {
       '[inline](../other/SKILL.md#call-modes "title")',
       "[angle](<../other/SKILL.md#encoded-%C3%A9>)",
       "[reference][owner]", "[owner]: ../other/SKILL.md#guardrails",
-      "`@augmentcode/themis/docs/SELECTORS.md#selector-lifecycle-rules`",
+      "`@themislib/themis/docs/SELECTORS.md#selector-lifecycle-rules`",
       "[local](#local)", "[file only](../other/SKILL.md)",
     ].join("\n");
     expect(findSectionReferences(content)).toEqual([
       "../other/SKILL.md#call-modes", "../other/SKILL.md#encoded-%C3%A9", "#local",
-      "../other/SKILL.md#guardrails", "@augmentcode/themis/docs/SELECTORS.md#selector-lifecycle-rules",
+      "../other/SKILL.md#guardrails", "@themislib/themis/docs/SELECTORS.md#selector-lifecycle-rules",
     ]);
   });
 
@@ -349,7 +349,7 @@ describe("skill section references", () => {
     ]);
     for (const reference of [
       "#local", "../other/SKILL.md#caf%C3%A9", "/skills/other/SKILL.md#repeated-1",
-      "@augmentcode/themis/docs/SELECTORS.md#selector-lifecycle-rules",
+      "@themislib/themis/docs/SELECTORS.md#selector-lifecycle-rules",
       "https://example.com/SKILL.md#remote", "//example.com/SKILL.md#remote", "./source.ts#symbol",
     ]) {
       expect(sectionReferenceIssue(reference, source, documents)).toBeUndefined();

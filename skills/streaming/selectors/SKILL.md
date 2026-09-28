@@ -9,9 +9,9 @@ requires:
   - streaming
   - core/state-integrity
 sources:
-  - "@augmentcode/themis/streaming-store"
+  - "@themislib/themis/streaming-store"
   - package-internal streaming selector implementation
-  - "@augmentcode/themis/docs/SELECTORS.md"
+  - "@themislib/themis/docs/SELECTORS.md"
 triggers:
   - streaming selector
   - Kefir selector
@@ -46,7 +46,7 @@ lifecycle/setup guidance here.
   implementation internals, not package API.
 
 ```ts
-import { StreamingStore } from "@augmentcode/themis/streaming-store";
+import { StreamingStore } from "@themislib/themis/streaming-store";
 
 export const streamStore = new StreamingStore({ todos: todosReducer });
 export const selectTodoCount = streamStore.createSelector((state) => {
@@ -117,7 +117,7 @@ is needed, and compose through `.select(state)` when another selector owns the
 collection read.
 
 ```ts
-import { getItem } from "@augmentcode/themis/utils/collections/collection-utils";
+import { getItem } from "@themislib/themis/utils/collections/collection-utils";
 
 export const selectTodo = streamStore.createSelector((state, id: string) => {
   return getItem(state.todos.collection, id);
