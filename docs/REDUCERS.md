@@ -81,10 +81,19 @@ export const fetchItems = createAsyncAction<
 An async action creator returns:
 - `type` — The action type string
 - `asyncActionType` — The async operation type
+- `seq` — A per-creator request sequence number, starting at 1 and increasing with each call
 - `payload` — The request payload
 - `promise` — The original promise, resolved with the response by `action.success(response)` or rejected with the original error by `action.failure(error)`
 - `success` — Action creator for the success case
 - `failure` — Action creator for the failure case
+
+### Request Sequence Numbers
+
+Each `createAsyncAction(...)` call creates an independent counter. Requests receive increasing `seq` numbers in creation order, not dispatch or completion order.
+
+The request-bound `action.success(response)` and `action.failure(error)` creators include the originating request's `seq` in their payloads: `{ request, response, seq }` and `{ request, error, seq }`. Read completion sequences from `action.payload.seq`, not a top-level `seq`.
+
+Static `fetchItems.success(...)` and `fetchItems.failure(...)` creators and ordinary actions remain unsequenced. Reducers can use sequence numbers to ignore stale completions; Themis does not do so automatically. Promise settlement and dispatch behavior are unchanged.
 
 ### Awaiting Results and Handling Failures
 
