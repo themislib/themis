@@ -162,7 +162,7 @@ describe("package metadata", () => {
   it("wires package scripts for testing, validation, and npm packaging", () => {
     expect(packageJson.name).toBe("@themislib/themis");
     expect(packageJson.version).toMatch(/^\d+\.\d+\.\d+$/);
-    expect(packageJson.bin).toEqual({ "themis": "./scripts/cli.mjs" });
+    expect(packageJson.bin).toEqual({ "themis": "scripts/cli.mjs" });
     expect(packageJson.scripts.build).toBe("vite build");
     expect(packageJson.scripts.prepack).toBe("npm run build");
     expect(packageJson.scripts.test).toBe("npx --no-install vitest run");
