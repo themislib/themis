@@ -50,10 +50,11 @@ export type ErrorResponse<PL> = {
 export type StoreAsyncAction<PL = undefined, R = unknown> = {
   type: string;
   asyncActionType: string;
+  seq: number;
   payload: PL;
   promise: Promise<R>;
-  success: StoreActionCreator<[R], SuccessResponse<PL, R>>;
-  failure: StoreActionCreator<[Error], ErrorResponse<PL>>;
+  success: StoreActionCreator<[R], SuccessResponse<PL, R> & { seq: number }>;
+  failure: StoreActionCreator<[Error], ErrorResponse<PL> & { seq: number }>;
 };
 
 export type StoreDispatch = {

@@ -92,7 +92,10 @@ export function createAsyncAction<ARGS extends any[] = [], PL = ARGS, R = unknow
   stagesActionType: string,
   payloadModifier?: PayloadModifier<ARGS, PL>
 ): StoreAsyncActionCreator<ARGS, PL, R> {
+  let sequence = 0;
+
   function actionCreator(...args: any[]): StoreAsyncAction<PL, R> {
+    const seq = ++sequence;
     // Determine payload using same logic as createAction
     let payload: PL;
     let resolve: (resolve: R) => void;
@@ -113,25 +116,27 @@ export function createAsyncAction<ARGS extends any[] = [], PL = ARGS, R = unknow
 
     // Create success action with captured payload
     // eslint-disable-next-line architecture/create-action-owner -- createAsyncAction factory creates caller-owned lifecycle actions.
-    const successAction = createAction<[R], SuccessResponse<PL, R>>(
+    const successAction = createAction<[R], SuccessResponse<PL, R> & { seq: number }>(
       `${stagesActionType}_SUCCESS`,
       (response: R) => {
         resolve(response);
         return {
           request: payload,
           response,
+          seq,
         };
       }
     );
 
     // eslint-disable-next-line architecture/create-action-owner -- createAsyncAction factory creates caller-owned lifecycle actions.
-    const failureAction = createAction<[Error], ErrorResponse<PL>>(
+    const failureAction = createAction<[Error], ErrorResponse<PL> & { seq: number }>(
       `${stagesActionType}_FAILURE`,
       (error: Error) => {
         reject(error);
         return {
           request: payload,
           error,
+          seq,
         };
       }
     );
@@ -139,6 +144,7 @@ export function createAsyncAction<ARGS extends any[] = [], PL = ARGS, R = unknow
     return {
       type: stagesActionType,
       asyncActionType: asyncActionType,
+      seq,
       payload,
       promise,
       success: successAction,
