@@ -359,9 +359,9 @@
     "redux-saga-test-plan": "^4.0.6",
     "svelte": "^5.55.1",
     "typescript": "^5.9.3",
-    "vite": "^8.0.3",
+    "vite": "^8.0.16",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.11"
   },
   "files": [
     "dist/",
