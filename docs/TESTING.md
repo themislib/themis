@@ -82,7 +82,7 @@ describe("itemsReducer async actions", () => {
     const items = [{ id: "1", name: "Item 1" }];
     const state = itemsReducer(
       { ...initialState, isLoading: true },
-      fetchItems.success({ response: { items, total: 1 } })
+      fetchItems.success({ items, total: 1 })
     );
     expect(state.isLoading).toBe(false);
     expect(state.items).toEqual(items);
@@ -91,7 +91,7 @@ describe("itemsReducer async actions", () => {
   it("should store error on failure", () => {
     const state = itemsReducer(
       { ...initialState, isLoading: true },
-      fetchItems.failure({ error: new Error("Network error") })
+      fetchItems.failure(new Error("Network error"))
     );
     expect(state.isLoading).toBe(false);
     expect(state.error).toBe("Network error");
