@@ -5,6 +5,7 @@
 - Corrected the testing skill's bound async-action success expectation to include the request sequence number, preserving the runtime contract.
 - Fixed the testing guide's static async-action success and failure examples to pass response and error arguments directly.
 - Added executable documentation regression coverage for all three async reducer request, success, and failure examples.
+- Optimized collection helpers with linear map creation, indexed bulk replacements, Set-based ID deduplication, and backward snapshot scans while preserving correctness.
 
 ## 0.3.1 - 2026-09-24
 
