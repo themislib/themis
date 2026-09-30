@@ -218,6 +218,20 @@ describe('documented typed test effects (Core F2)', () => {
     for (const check of checks) await check();
   });
 
+  it('executes the documented async reducer request, success and failure assertions', async () => {
+    const fetchItems = actions.createAsyncAction('items/fetch', 'items/fetchItems');
+    const itemsReducer = evaluate(snippet('docs/REDUCERS.md', '### Handling Async Actions in Reducers'),
+      'return exports.itemsReducer;', {
+        createReducer, fetchItems, initialState: { items: [], isLoading: false, error: null },
+      });
+    const checks = exampleTests('import { describe, it, expect } from "vitest";\n' +
+      snippet('docs/TESTING.md', '### Testing Async Action Handlers'), {
+        './items-slice': { itemsReducer, fetchItems },
+      });
+    expect(checks).toHaveLength(3);
+    for (const check of checks) await check();
+  });
+
   it.each([false, true])('framework-neutral Store example dispatches and disposes even if an assertion fails (%s)', (fails) => {
     const addTodo = actions.createAction('todos/add');
     const todosReducer = createReducer({ items: [] }).with(addTodo, (state, { payload: [todo] }) => ({ items: [...state.items, todo] }));

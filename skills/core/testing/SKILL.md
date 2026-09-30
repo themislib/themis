@@ -151,7 +151,7 @@ describe("loadTodosWorker", () => {
     const request = loadTodos("open");
     await expectSaga(loadTodosWorker, request)
       .provide([[select(selectCurrentUserId.select), "u1"], [matchers.call.fn(fetchTodos), todos]])
-      .put({ type: loadTodos.success.type, payload: { request: request.payload, response: todos } })
+      .put({ type: loadTodos.success.type, payload: { request: request.payload, response: todos, seq: request.seq } })
       .silentRun();
     await expect(request.promise).resolves.toEqual(todos);
   });
