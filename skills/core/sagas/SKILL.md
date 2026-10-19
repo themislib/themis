@@ -42,6 +42,7 @@ Use this skill when editing saga code or writing instructions for saga changes. 
 - Import the named selectors from the owning slice's `[slice]-selectors.ts` file; saga modules must not declare local `select*` functions/factories, even when they are not exported.
 - Subscribe with concrete action creators, action-creator arrays, or selector-channel helpers; never use `take('*')` or other wildcard takes.
 - Search before adding watchers: trigger action, worker name, registration name, and operation terms must have one canonical owner unless fan-out is intentional and documented.
+- For a promise-bearing operation, watch its one `createAsyncAction` request creator and dispatch that request instance's `action.success(...)` or `action.failure(...)`; do not rebuild its lifecycle with parallel `createAction` declarations.
 - Choose an explicit owner for app saga startup; follow [Application saga startup](#application-saga-startup) and the linked lifecycle contract.
 - Close manually-created channels in `finally`.
 - Handle async action failures with `.failure(error)` and normalize non-`Error` throws.
@@ -102,12 +103,14 @@ function* watchLoadTodos() {
   yield* takeLatest(loadTodos, loadTodosWorker);
 }
 
-function* loadTodosWorker() {
+function* loadTodosWorker(action: ReturnType<typeof loadTodos>) {
   const userId = yield* selectCurrentUserId.effect();
   const todos = yield* call(api.fetchTodos, userId);
-  yield* put(loadTodosSuccess(todos));
+  yield* put(action.success(todos));
 }
 ```
+
+Here `loadTodos` is one `createAsyncAction`; its request instance carries the settlement callback. Reducers consume `loadTodos`, `loadTodos.success`, and `loadTodos.failure`, rather than separately declared lifecycle `createAction` creators.
 
 ### 2. Debounce trailing user input with takeLatest + delay
 
@@ -125,13 +128,13 @@ function* watchSearchInput() {
 
 ### 3. Debounce leading/windowed behavior with takeLeading + delay
 
-Here `refreshRequested` is an ordinary `createAction` event, not a promise-bearing `createAsyncAction`: ignored triggers have no result to await.
+Here `refreshTriggered` is an ordinary `createAction` event, not a promise-bearing `createAsyncAction`: ignored triggers have no result to await.
 
 ```ts
 import { call, delay, takeLeading } from "typed-redux-saga";
 
 function* watchRefreshRequests() {
-  yield* takeLeading(refreshRequested, function* refreshOncePerWindow(action) {
+  yield* takeLeading(refreshTriggered, function* refreshOncePerWindow(action) {
     try {
       yield* call(api.refresh, action.payload[0]);
     } finally {

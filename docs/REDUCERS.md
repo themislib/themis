@@ -67,6 +67,12 @@ export const addItem = createAction(
 
 Async actions represent operations with three stages: request, success, and failure.
 
+### Choose one canonical creator
+
+Use one `createAsyncAction` when an operation is promise-bearing: a caller may await a per-dispatch result and a saga must correlate its request with success, failure, or cancellation. Do not model that workflow with separate lifecycle-suffixed `createAction` declarations. Parallel creators duplicate `createAsyncAction` while losing request correlation and promise settlement, and `themis/no-manual-async-lifecycle-action` reports each reserved lifecycle declaration individually.
+
+Use ordinary `createAction` for standalone domain events that do not promise a result, such as a deliberately ignored refresh trigger. A legitimate standalone domain event or compatibility contract whose name ends in a reserved lifecycle word needs a reviewed, narrow exact-line `eslint-disable-next-line themis/no-manual-async-lifecycle-action -- reason` exception; do not use a broad suppression.
+
 ```typescript
 import { createAsyncAction } from "@themislib/themis/utils/store/create-action";
 
@@ -113,6 +119,8 @@ try {
 If the caller does not need the result, use `store.dispatch(fetchItems("active"))` without a defensive catch. Attaching `action.promise.catch(...)`, including `action.promise.catch(() => undefined)`, is redundant; the `themis/redundant-async-action-catch` ESLint rule reports catch calls when the promise is statically proven to come from a Themis async action. Move meaningful recovery into the dispatch-await `try/catch` pattern instead.
 
 Sagas should settle each request with its per-instance `action.success(...)` or `action.failure(...)` creators; reducers still handle the creator's static `.success` and `.failure` stages as shown below. See [Async Action Error Flow](./SAGAS.md#async-action-error-flow).
+
+To migrate a parallel lifecycle flow, replace its request/success/failure creators with one `createAsyncAction`, move reducer handlers to that creator and its static stages, update the saga to dispatch request-instance stages, and let callers await `store.dispatch(operation(...))` when they need the result.
 
 ### Handling Async Actions in Reducers
 

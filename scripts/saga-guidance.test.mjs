@@ -203,16 +203,14 @@ describe('documented typed test effects (Core F2)', () => {
   });
 
   it('executes the manual generator assertions with raw descriptors', async () => {
-    const fetchItems = actions.createAction('items/fetch');
-    const setItems = actions.createAction('items/set');
-    const fetchFailed = actions.createAction('items/failed');
+    const fetchItems = actions.createAsyncAction('items/fetchAsync', 'items/fetch');
     const api = { fetchItems: vi.fn() };
     function* handleFetch(action) {
-      try { yield* typed.put(setItems(yield* typed.call(api.fetchItems, action.payload[0]))); }
-      catch (error) { yield* typed.put(fetchFailed(error.message)); }
+      try { yield* typed.put(action.success(yield* typed.call(api.fetchItems, action.payload[0]))); }
+      catch (error) { yield* typed.put(action.failure(error)); }
     }
     const checks = exampleTests(snippet('docs/TESTING.md', '### Manual Generator Stepping'), {
-      './my-saga': { handleFetch }, './my-slice': { fetchItems, setItems, fetchFailed }, '../api': api,
+      './my-saga': { handleFetch }, './my-slice': { fetchItems }, '../api': api,
     });
     expect(checks).toHaveLength(2);
     for (const check of checks) await check();
@@ -297,16 +295,16 @@ describe('documented async request policy (Core F5)', () => {
 
   it('leading/windowed example deliberately ignores ordinary events without dangling request promises', async () => {
     vi.useFakeTimers();
-    const refreshRequested = actions.createAction('todos/refreshRequested');
+    const refreshTriggered = actions.createAction('todos/refreshTriggered');
     const input = stdChannel(), work = deferred(), api = { refresh: vi.fn(() => work.promise) };
-    const owner = evaluate(snippet(skill('sagas'), '### 3. Debounce'), 'return watchRefreshRequests;', { refreshRequested, api });
+    const owner = evaluate(snippet(skill('sagas'), '### 3. Debounce'), 'return watchRefreshRequests;', { refreshTriggered, api });
     const task = runSaga({ channel: input }, owner);
-    const first = refreshRequested('first'), ignored = refreshRequested('ignored');
+    const first = refreshTriggered('first'), ignored = refreshTriggered('ignored');
     expect(first).not.toHaveProperty('promise'); expect(ignored).not.toHaveProperty('promise');
     input.put(first); input.put(ignored);
     expect(api.refresh.mock.calls).toEqual([['first']]);
     work.resolve(); await vi.advanceTimersByTimeAsync(250);
-    input.put(refreshRequested('later'));
+    input.put(refreshTriggered('later'));
     expect(api.refresh.mock.calls).toEqual([['first'], ['later']]);
     task.cancel(); await vi.runAllTimersAsync(); await task.toPromise();
   });

@@ -16,6 +16,7 @@ import { plugin as duplicateStateFieldPlugin } from "../store/duplicate-state-fi
 import { plugin as forbiddenComponentImportPlugin } from "../svelte/forbidden-component-import/plugin.mjs";
 import { plugin as forbiddenReduxApiPlugin } from "../core/forbidden-redux-api/plugin.mjs";
 import { plugin as inlineSagaSelectorPlugin } from "../store/inline-saga-selector/plugin.mjs";
+import { plugin as noManualAsyncLifecycleActionPlugin } from "../store/no-manual-async-lifecycle-action/plugin.mjs";
 import { plugin as noExtraSelectorCachingPlugin } from "../store/no-extra-selector-caching/plugin.mjs";
 import { plugin as noWildcardSagaTakePlugin } from "../store/no-wildcard-saga-take/plugin.mjs";
 import { plugin as nonSerializableInitialStatePlugin } from "../store/non-serializable-initial-state/plugin.mjs";
@@ -67,6 +68,7 @@ export {
   forbiddenComponentImportPlugin,
   forbiddenReduxApiPlugin,
   inlineSagaSelectorPlugin,
+  noManualAsyncLifecycleActionPlugin,
   noExtraSelectorCachingPlugin,
   noWildcardSagaTakePlugin,
   nonSerializableInitialStatePlugin,
@@ -120,6 +122,7 @@ export const nativeReplacementRulePlugins = {
   "action-type-shape": actionTypeShapePlugin,
   "camelcase-slice-identity": sliceIdentityCamelCasePlugin,
   "create-action-owner": createActionOwnerPlugin,
+  "no-manual-async-lifecycle-action": noManualAsyncLifecycleActionPlugin,
   "direct-local-storage-usage": directLocalStorageUsagePlugin,
   "selector-file-name": selectorFileNamePlugin,
   "selector-export-name": selectorExportNamePlugin,
@@ -195,6 +198,7 @@ export const storeRulePlugins = {
   "action-type-shape": actionTypeShapePlugin,
   "camelcase-slice-identity": sliceIdentityCamelCasePlugin,
   "create-action-owner": createActionOwnerPlugin,
+  "no-manual-async-lifecycle-action": noManualAsyncLifecycleActionPlugin,
   "selector-file-name": selectorFileNamePlugin,
   "selector-export-name": selectorExportNamePlugin,
   "single-slice-selectors-module": singleSliceSelectorsModulePlugin,

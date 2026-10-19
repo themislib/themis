@@ -53,6 +53,8 @@ For the package's custom Redux API and architecture constraints, read `./core/co
 
 For every family, route Redux ownership and component-versus-saga side-effect decisions to `./core/core-policy/SKILL.md` — **Setup — core rules** and **When to use Redux vs component-local state**. That skill owns the policy, including the DOM-local exception; this router does not redefine it.
 
+For a Redux operation with a caller-visible promise or request/success/failure settlement, load `./core/actions/SKILL.md` — **Async action cues** before choosing creators. It owns the decision between one `createAsyncAction` and a standalone `createAction` domain event.
+
 For existing effects, classify them with that policy before loading the selected family's migration leaf: `./react/migration/side-effects/SKILL.md` or `./svelte/migration/side-effects/SKILL.md`. Do not load both for the same app.
 
 ## Generic lifecycle routing

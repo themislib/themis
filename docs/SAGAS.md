@@ -297,13 +297,13 @@ export function* searchSaga() {
 
 Use `takeLeading` plus a trailing `delay` only when the first action should run immediately and newer actions should be ignored for a window:
 
-Use an ordinary `createAction` event for `refreshRequested` here, not a promise-bearing async request: ignored events have no result to await. `takeLatest` cancellation likewise does not settle an async request automatically; the worker must reject through its instance `action.failure(...)` in a `finally` branch guarded by `yield* cancelled()`. Cancellation bypasses `catch`. See `skills/core/actions/SKILL.md` for the complete instance success/failure/cancellation policy. If ignored requests need a response, implement explicit admission/rejection rather than relying on `takeLeading` to settle them. Never dispatch a promise-bearing request to an absent/stopped owner and expect automatic settlement.
+Use an ordinary `createAction` event for `refreshTriggered` here, not a promise-bearing async request: ignored events have no result to await. `takeLatest` cancellation likewise does not settle an async request automatically; the worker must reject through its instance `action.failure(...)` in a `finally` branch guarded by `yield* cancelled()`. Cancellation bypasses `catch`. See `skills/core/actions/SKILL.md` for the complete instance success/failure/cancellation policy. If ignored requests need a response, implement explicit admission/rejection rather than relying on `takeLeading` to settle them. Never dispatch a promise-bearing request to an absent/stopped owner and expect automatic settlement.
 
 ```typescript
 import { call, delay, takeLeading } from "typed-redux-saga";
 
 export function* refreshSaga() {
-  yield* takeLeading(refreshRequested, function* refreshOncePerWindow(action) {
+  yield* takeLeading(refreshTriggered, function* refreshOncePerWindow(action) {
     try {
       yield* call(api.refresh, action.payload[0]);
     } finally {
@@ -433,6 +433,10 @@ export const store = new Store(
 `ReactStore` and `StreamingStore` use the same final `options` argument. Omit `sagaMonitor` or pass `sagaMonitor: false` when monitoring is not needed; the Store still owns saga middleware creation, saga-manager startup, and `store.runSaga(...)` lifecycle behavior. Do not pass custom monitor objects through Store options, globally monkey-patch redux-saga, or replace the Store-owned saga middleware just to attach monitoring.
 
 ## Error Handling
+
+### Promise-bearing workflow ownership
+
+When callers need to await a result, model the operation once with `createAsyncAction`. Watch its request creator and settle that exact request through `action.success(...)` or `action.failure(...)`. Do not define separate lifecycle-suffixed `createAction` creators: they duplicate the canonical creator but lose its request correlation and promise settlement. `themis/no-manual-async-lifecycle-action` reports those declarations individually. Ordinary `createAction` remains appropriate for standalone domain events with no promise to settle; a reviewed compatibility or domain-event exception using a reserved lifecycle suffix needs an exact-line, rule-specific ESLint disable rather than a broad suppression.
 
 ### In Saga Workers
 

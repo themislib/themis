@@ -65,6 +65,7 @@ const ruleDefinitions = {
   "action-type-shape": { files: sourceFiles },
   "camelcase-slice-identity": { files: sourceFiles },
   "create-action-owner": { files: sourceFiles },
+  "no-manual-async-lifecycle-action": { files: sourceFiles },
   "direct-local-storage-usage": {
     files: sourceFiles,
     ignores: ["**/examples/utils/safe-local-storage-saga.{js,ts}"],

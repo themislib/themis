@@ -1,6 +1,6 @@
 {
   "name": "@themislib/themis",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "publishConfig": {
     "access": "public"
   },
@@ -224,6 +224,10 @@
     "./eslint-plugins/plugins/nondeterministic-reducer-state": {
       "import": "./eslint-plugins/store/nondeterministic-reducer-state/plugin.mjs",
       "default": "./eslint-plugins/store/nondeterministic-reducer-state/plugin.mjs"
+    },
+    "./eslint-plugins/plugins/no-manual-async-lifecycle-action": {
+      "import": "./eslint-plugins/store/no-manual-async-lifecycle-action/plugin.mjs",
+      "default": "./eslint-plugins/store/no-manual-async-lifecycle-action/plugin.mjs"
     },
     "./eslint-plugins/plugins/pass-through-wrapper": {
       "import": "./eslint-plugins/core/pass-through-wrapper/plugin.mjs",
