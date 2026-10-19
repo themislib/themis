@@ -33,6 +33,8 @@ triggers:
 
 ## Async action cues
 
+- **Choose before implementing:** use one `createAsyncAction` when an operation is promise-bearing: its caller can await a per-dispatch result and the saga must correlate request, success, failure, or cancellation. Use ordinary `createAction` only for a standalone domain event with no request promise to settle.
+- Do not manually declare `createAction` request/success/failure lifecycle creators for a promise-bearing operation. They duplicate `createAsyncAction`, lose its request correlation and promise settlement, and are reported individually by `themis/no-manual-async-lifecycle-action`.
 - `createAsyncAction<[Args], Success>(asyncType, stagesType)` creates the request creator plus static `.success` and `.failure` creators.
 - A dispatched request action carries `payload`, `promise`, and per-instance `success`/`failure` creators.
 - Themis internally observes ignored async-action rejections, preventing unhandled-rejection events without changing the original promise; explicit awaiters still receive the original rejection.
@@ -41,6 +43,14 @@ triggers:
 - Sagas watch the request creator unless they are intentionally reacting to success/failure events.
 - Only the request instance's `action.success(result)` / `action.failure(error)` settles its promise; static stages merely create Redux actions. Dispatch the instance stage as well when reducers need the update.
 - Settlement is an application policy, not automatic: `takeLatest` cancellation enters `finally`, not `catch`. Reject cancelled requests explicitly as below. With `takeLeading`, an ignored request never reaches a worker: use ordinary `createAction` triggers when no response is guaranteed, or an explicit admission owner that rejects ignored requests. Do not await a promise-bearing request when its watcher is absent/stopped.
+
+### Migration from parallel lifecycle creators
+
+1. Replace the request/success/failure `createAction` declarations with one `createAsyncAction` named for the operation.
+2. Point reducers at the request creator, `operation.success`, and `operation.failure`.
+3. Watch the request creator in the saga and dispatch that request instance's `action.success(...)` or `action.failure(...)`.
+4. Let callers that need a result await `store.dispatch(operation(...))`.
+5. A genuine standalone domain event or compatibility contract whose final name uses a reserved lifecycle word needs a reviewed, exact-line exception: `eslint-disable-next-line themis/no-manual-async-lifecycle-action -- reason`. Do not use a broad suppression.
 
 ## Examples
 
@@ -106,6 +116,20 @@ const success = request.success({ id: "todo-1", title: "Ship docs" });
 success.payload.request.id satisfies string;
 ```
 
+### ❌ Bad / ✅ Good: one promise-bearing workflow has one creator
+
+```ts
+import { createAction, createAsyncAction } from "@themislib/themis/utils/store/create-action";
+
+// BAD: unrelated declarations cannot carry one request's promise or correlation.
+const loadTodoRequested = createAction<[id: string]>("todos/loadRequested");
+const loadTodoSucceeded = createAction<[todo: Todo]>("todos/loadSucceeded");
+const loadTodoFailed = createAction<[error: Error]>("todos/loadFailed");
+
+// GOOD: the request and its static stages share one canonical operation owner.
+const loadTodo = createAsyncAction<[id: string], { id: string }, Todo>("todos/loadAsync", "todos/load", (id) => ({ id }));
+```
+
 ### Await dispatch when the caller needs the result
 
 Using `loadTodo` above and an initialized Themis `store` whose saga settles the request:
@@ -168,6 +192,7 @@ const [{ id, title }] = renameTodoFromList({ id: "todo-1", title: "Ship docs" })
 ## Don't
 
 - Do not create aliases with the same type string in another module.
+- Do not use parallel lifecycle-suffixed `createAction` declarations for a promise-bearing request; migrate to one `createAsyncAction` instead.
 - Do not pass `.type` to saga watchers; pass the creator.
 - Do not assume cancellation, ignored requests, or static success/failure stages settle an instance promise.
 - Do not use object payload types for one-argument actions unless an existing public contract already requires that shape.

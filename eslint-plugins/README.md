@@ -46,10 +46,10 @@ Each root composes the lower layers (core, then store, then its domain rules); r
 | Root | Composition | Enabled rules | Use for |
 | --- | --- | --- | --- |
 | `core` | core only | 4 | Any JS/TS package (package/source hygiene only) |
-| `store` | core + store | 42 | Packages that define state/sagas but no UI |
-| `svelte` | core + store + svelte | 45 | Svelte consumer projects |
-| `react` | core + store + react | 46 | React consumer projects |
-| `streaming` | core + store | 42 | Node/server/worker consumers; gains streaming rules when they exist |
+| `store` | core + store | 43 | Packages that define state/sagas but no UI |
+| `svelte` | core + store + svelte | 46 | Svelte consumer projects |
+| `react` | core + store + react | 47 | React consumer projects |
+| `streaming` | core + store | 43 | Node/server/worker consumers; gains streaming rules when they exist |
 
 `plugins` is not a raw ESLint plugin object. It is a named map of per-rule flat-config entries for selected composition.
 
@@ -165,6 +165,23 @@ createAction("todos/addTodo");
 ```
 
 Remediate by creating action creators in the slice owner module. `createAsyncAction` is intentionally not covered by this placement gate until the architecture convention explicitly requires the same treatment.
+
+### `themis/no-manual-async-lifecycle-action`
+
+Invalid:
+
+```ts
+export const loadTodoStarted = createAction("todos/load");
+export const loadTodo = createAction("todos/loadSucceeded");
+```
+
+Valid:
+
+```ts
+export const loadTodo = createAsyncAction("todos/loadAsync", "todos/load");
+```
+
+This store-domain rule reports each `createAction` declaration whose creator name or final static action-type segment ends in a reserved lifecycle word: `requested`, `started`, `pending`, `completed`, `succeeded`, `success`, `fulfilled`, `failed`, `failure`, or `rejected` (case-insensitive). It intentionally does not wait for a request/success/failure triplet. `createAsyncAction` and the lifecycle creators generated inside its factory implementation are exempt. For a reviewed standalone domain event or compatibility requirement, use a narrow `eslint-disable-next-line themis/no-manual-async-lifecycle-action -- reason` comment; do not use a broad suppression.
 
 ### `themis/redundant-async-action-catch`
 

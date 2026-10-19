@@ -66,6 +66,7 @@ export const architectureRules = {
   actionTypeShape: "action-type-shape",
   camelcaseSliceIdentity: "camelcase-slice-identity",
   createActionOwner: "create-action-owner",
+  noManualAsyncLifecycleAction: "no-manual-async-lifecycle-action",
   testSelectorSelect: "test-selector-select",
   typedSagaCallMockGuard: "typed-saga-call-mock-guard",
 };

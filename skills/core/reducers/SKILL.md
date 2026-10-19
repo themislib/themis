@@ -28,7 +28,7 @@ triggers:
 
 - Keep handlers pure and immutable; return new objects only for actual state changes.
 - Return the incoming state reference when a handler is a no-op.
-- Use action creators from the canonical owner; register request/success/failure handlers for async actions as needed.
+- Use action creators from the canonical owner; for a promise-bearing operation, register the one `createAsyncAction` request creator plus its `.success` and `.failure` stages.
 - Store source facts only: collections, ids, relationships, request status, and plain errors.
 - Put expensive work, generated values, persistence, and external calls in actions or sagas, not reducers.
 - Register slice reducers with the store owner rather than creating parallel reducer trees.
@@ -36,6 +36,7 @@ triggers:
 ## Don't
 
 - Do not mutate state or collection internals.
+- Do not create separate lifecycle `createAction` declarations for a promise-bearing request; the canonical `createAsyncAction` owns all three reducer stages.
 - Do not call `Date.now()`, `Math.random()`, `fetch`, `localStorage`, or other side-effect APIs inside reducer handlers.
 - Do not store derived fields such as `filtered*`, `sorted*`, `*Count`, `has*`, or selected entity copies when selectors can compute them.
 - Do not add new helper functions before searching existing utilities and documenting why reuse/extension is not enough.

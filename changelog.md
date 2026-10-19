@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 - 2026-10-19
+
+- Added the `themis/no-manual-async-lifecycle-action` lint guardrail to warn on parallel lifecycle `createAction` declarations and guide promise workflows to one `createAsyncAction`.
+- Aligned action, reducer, saga, and testing guidance with request-bound async stages, and added regression coverage for the rule and guidance.
+
 ## 0.3.3 - 2026-09-29
 
 - Corrected the testing skill's bound async-action success expectation to include the request sequence number, preserving the runtime contract.

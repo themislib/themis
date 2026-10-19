@@ -279,7 +279,7 @@ describe("package metadata", () => {
       react: [...storeRootRuleIds, ...architectureRuleDomains.react],
       streaming: storeRootRuleIds,
     };
-    const expectedRootRuleCounts = { core: 4, store: 42, svelte: 45, react: 46, streaming: 42 };
+    const expectedRootRuleCounts = { core: 4, store: 43, svelte: 46, react: 47, streaming: 43 };
 
     expect(Object.keys(architectureRootModule).sort()).toEqual(["core", "plugins", "react", "store", "streaming", "svelte"]);
     expect(architectureRootModule.full).toBeUndefined();
@@ -1118,6 +1118,50 @@ describe("package metadata", () => {
     const collection = await import("@themislib/themis/eslint-plugins/plugins");
     expect(standalone.default).toBe(plugin);
     expect(collection.redundantAsyncActionCatchPlugin).toBe(plugin);
+  });
+
+  it("prohibits individual manual async lifecycle declarations", () => {
+    const ruleId = "no-manual-async-lifecycle-action";
+    const plugin = architectureRulePlugins[ruleId];
+    const invalidMessages = lintArchitectureRule(
+      ruleId,
+      plugin,
+      `
+        const loadStarted = createAction("todos/load");
+        const load = createAction("todos/loadRequested");
+        const LOAD_PENDING = createAction("todos/load");
+        const loadFailure = createAction("todos/LOAD_FAILURE");
+      `,
+      "src/todos-slice.ts"
+    );
+    const validMessages = lintArchitectureRule(
+      ruleId,
+      plugin,
+      `
+        const saveTodo = createAction("todos/save");
+        const setSpending = createAction("finance/setSpending");
+        const gameRestarted = createAction("games/restarted");
+        const GAME_RESTARTED = createAction("games/GAME_RESTARTED");
+        const load = createAsyncAction("todos/loadAsync", "todos/load");
+        // eslint-disable-next-line themis/no-manual-async-lifecycle-action -- reviewed domain event retained for audit compatibility
+        const auditStarted = createAction("audit/started");
+      `,
+      "src/todos-slice.ts",
+      { ...architectureValidationLanguageOptions, parser: typescriptEslintParser }
+    );
+    const internalFactoryMessages = lintArchitectureRule(
+      ruleId,
+      plugin,
+      'const success = createAction("todos/load_SUCCESS");',
+      "src/utils/store/create-action.ts"
+    );
+
+    expect(invalidMessages.map(({ ruleId: messageRuleId }) => messageRuleId)).toEqual(Array.from({ length: 4 }, () => namespacedRuleId(ruleId)));
+    expect(invalidMessages.every(({ message }) => message.includes("one createAsyncAction"))).toBe(true);
+    expect(validMessages).toEqual([]);
+    expect(internalFactoryMessages).toEqual([]);
+    for (const root of [store, svelte, react, streaming]) expect(selectedRuleIdsFromConfig(root)).toContain(ruleId);
+    expect(selectedRuleIdsFromConfig(core)).not.toContain(ruleId);
   });
 
   it("keeps custom ESLint rule messages concise while preserving detailed metadata", () => {

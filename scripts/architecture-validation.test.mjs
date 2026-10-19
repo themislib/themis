@@ -79,6 +79,33 @@ describe("architecture validation gate", () => {
     expect((await validateArchitecture({ root, paths: ["src"] })).diagnostics).toEqual([]);
   });
 
+  it("prohibits manual async lifecycle actions while allowing reviewed and internal exceptions", async () => {
+    const ruleId = architectureRules.noManualAsyncLifecycleAction;
+    const [valid, invalid] = await Promise.all([readRuleFixture(ruleId, "valid"), readRuleFixture(ruleId, "invalid")]);
+    const root = await createFixture({
+      "src/valid-slice.ts": valid,
+      "src/invalid-slice.ts": invalid,
+      "src/legacy-slice.ts": `
+        import { createAction } from "@themislib/themis/utils/store/create-action";
+        // eslint-disable-next-line architecture/no-manual-async-lifecycle-action -- compatibility event retained for external consumers until v2
+        export const legacyStarted = createAction("legacy/started");
+      `,
+      "src/utils/store/create-action.ts": `
+        export function createAsyncAction() {
+          const staticSuccess = createAction("todos/load_SUCCESS");
+          return staticSuccess;
+        }
+      `,
+    });
+
+    const result = await validateArchitecture({ root, paths: ["src"] });
+    const diagnostics = result.diagnostics.filter((diagnostic) => diagnostic.rule === ruleId);
+
+    expect(diagnostics).toHaveLength(4);
+    expect(diagnostics.every(({ file }) => file === "src/invalid-slice.ts")).toBe(true);
+    expect(diagnostics.every(({ message }) => message.includes("one createAsyncAction"))).toBe(true);
+  });
+
   it("createAction placement accepts slice owners and reports non-slice modules", async () => {
     const root = await createFixture({
       "src/todos-slice.ts": `

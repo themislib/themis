@@ -164,7 +164,7 @@ For more control, step through the generator manually:
 import { describe, it, expect } from "vitest";
 import { call, put } from "redux-saga/effects";
 import { handleFetch } from "./my-saga";
-import { fetchItems, setItems, fetchFailed } from "./my-slice";
+import { fetchItems } from "./my-slice";
 import * as api from "../api";
 
 describe("handleFetch (manual)", () => {
@@ -177,7 +177,7 @@ describe("handleFetch (manual)", () => {
 
     // Step 2: dispatch success with the result
     const items = [{ id: "1" }];
-    expect(gen.next(items).value).toEqual(put(setItems(items)));
+    expect(gen.next(items).value).toEqual(put(action.success(items)));
 
     // Step 3: done
     expect(gen.next().done).toBe(true);
@@ -189,7 +189,7 @@ describe("handleFetch (manual)", () => {
 
     gen.next(); // Advance to call
     const error = new Error("Network error");
-    expect(gen.throw(error).value).toEqual(put(fetchFailed(error.message)));
+    expect(gen.throw(error).value).toEqual(put(action.failure(error)));
   });
 });
 ```

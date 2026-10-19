@@ -60,7 +60,7 @@ leaf owns its implementation rules. Loading this index through a leaf's
 | `./import-boundaries/SKILL.md` | Public package imports, saga import boundaries, and Store-first public subpackages. |
 | `./file-structure/SKILL.md` | Slice file layout, type modules, sagas, and Store registration patterns. |
 | `./state-serialization/SKILL.md` — **Do** and **Don't** | Structured-clone-safe Redux state values. |
-| `./actions/SKILL.md` — **Do** and **Async action cues** | `createAction` and `createAsyncAction` action creators. |
+| `./actions/SKILL.md` — **Do**, **Async action cues**, and **Migration from parallel lifecycle creators** | Choose one `createAsyncAction` for promise-bearing request workflows; use `createAction` for standalone domain events. |
 | `./reducers/SKILL.md` — **Do** and **Implementation cues** | `createReducer`, immutable chained reducers, and no-op reference equality behavior. |
 | `./sagas/SKILL.md` — **Do** and **Implementation cues** | typed-redux-saga flows, watchers, debounce, retry/timeout, and side-effect orchestration. |
 | `./saga-manager/SKILL.md` — **Store saga lifecycle** and **Start, stop, restart, and backoff mechanics** | `store.runSaga`, per-owner cancellation, whole-Store disposal, and package-owned crash/restart behavior. |
